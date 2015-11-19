@@ -21,6 +21,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.lang.Float;
+import java.lang.reflect.Executable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.InputMismatchException;
@@ -59,7 +60,6 @@ public class Database {
         this.users = new ArrayList<User>();
         this.transactions = new ArrayList<SaleTransaction>();
     }
-    
 
         /**
      * Constructor. Initializes the inventory, users, and transactions to given values.
@@ -272,10 +272,23 @@ public class Database {
      * @param sc The scanner object used to read user input.
      * @throws Database BadInputException
      */
-    public void updateUser() throws BadInputException {
+    public void updateUser(String id, String fname, String lname, String ph, String dl, String ex3, String ex4) throws BadInputException {
+        int userID=-1, dlNumber=-1, bankAccNumber=-1;
+        float monthlySalary;
 
-        int userID = ;
-        
+        try {
+            userID = Integer.parseInt(id);
+            dlNumber = Integer.parseInt(dl);
+            bankAccNumber = Integer.parseInt(ex4);
+        }catch(Exception e){
+            throw new BadInputException("Invalid userID, Driver's License, or Bank Account Number.");
+        }
+
+        if (dlNumber < 0)
+            throw new BadInputException("Driver license number cannot be negative.");
+        if (bankAccNumber < 0)
+            throw new BadInputException("Driver license number cannot be negative.");
+
         User user = null;
         for (User u : users) {
             if (u.getId() == userID)
@@ -283,35 +296,30 @@ public class Database {
         }
         
         if (user == null) {
-            System.out.println("User not found.");
-            return;
+            throw new BadInputException("NO User Found.");
         }
 
-        String firstName = ;
-
-        String lastName = ;
+        String firstName = fname;
+        String lastName = lname;
         
         if (user instanceof Customer) {
-            String phoneNumber = ;
+            String phoneNumber = ph;
 
-            int dlnumber = ;
-            if (dlnumber < 0)
-                throw new BadInputException("Driver license number cannot be negative.");
-            
             user.setFirstName(firstName);
             user.setLastName(lastName);
             ((Customer)user).setPhoneNumber(phoneNumber);
-            ((Customer)user).setDriverLicenceNumber(dlnumber);
+            ((Customer)user).setDriverLicenceNumber(dlNumber);
             
         } else { //User is an employee
-            float monthlySalary = ;
+            try{
+                monthlySalary = Float.parseFloat(ex3);
+            }catch (Exception e){
+                throw new BadInputException("Invalid Monthly Salary");
+            }
+
             if (monthlySalary < 0.0f)
                 throw new BadInputException("Monthly salary cannot be negative.");
 
-            int bankAccNumber = ;
-            if (bankAccNumber < 0)
-                throw new BadInputException("Driver license number cannot be negative.");
-            
             user.setFirstName(firstName);
             user.setLastName(lastName);
             ((Employee)user).setMonthlySalary(monthlySalary);
