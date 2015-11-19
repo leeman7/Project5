@@ -13,14 +13,17 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+/**
+ *
+ */
 public class GUI extends JFrame implements ItemListener {
-    //
+    // Setup Menu Items
     private JPanel cards; //a panel that uses CardLayout
     private final static String vehicleMngmt = "Vehicle Managment";
     private final static String userMngmt = "User Management";
     private final static String transMngmt = "Transaction Management";
     
-    // Vehicle managment components
+    // Vehicle management components
     private JRadioButton showVehiclesRadioButton;
     private JRadioButton addVehicleRadioButton;
     private JRadioButton deleteVehicleRadioButton;
@@ -98,8 +101,7 @@ public class GUI extends JFrame implements ItemListener {
         manageVehicles = new JButton("Go");
         //manageVehicles.setActionCommand("OUCH!");
         vehicleMngmtPanel.add(manageVehicles);
-        
-        
+
         //User management
         JPanel userMngmtPanel = new JPanel(new GridLayout(0, 1));
         showUsersRadioButton =  new JRadioButton("Show all users");
@@ -157,35 +159,78 @@ public class GUI extends JFrame implements ItemListener {
         manageVehicles.addActionListener(new ActionListener () { 
             public void actionPerformed(ActionEvent e) {
                 if (showVehiclesRadioButton.isSelected())
-                    showAllVehicles();
+                    try { showAllVehicles();
+                    } catch (BadInputException e1) {
+                        e1.printStackTrace();
+                    }
                 else if (addVehicleRadioButton.isSelected())
-                    addNewVehicle();
+                    try {
+                        addNewVehicle();
+                    } catch (BadInputException e1) {
+                        e1.printStackTrace();
+                    }
                 else if (deleteVehicleRadioButton.isSelected())
-                    deleteVehicle();
+                    try {
+                        deleteVehicle();
+                    } catch (BadInputException e1) {
+                        e1.printStackTrace();
+                    }
                 else if (searchByVinRadioButton.isSelected())
-                    searchVehicleByVin();
+                    try {
+                        searchVehicleByVin();
+                    } catch (BadInputException e1) {
+                        e1.printStackTrace();
+                    }
                 else if (searchByPriceRadioButton.isSelected())
-                    searchVehicleByPrice();
+                    try {
+                        searchVehicleByPrice();
+                    } catch (BadInputException e1) {
+                        e1.printStackTrace();
+                    }
             }
         });
         manageUsers.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (showUsersRadioButton.isSelected())
-                    showAllUsers();
+                    try {
+                        showAllUsers();
+                    } catch (BadInputException e1) {
+                        e1.printStackTrace();
+                    }
                 else if (addUserRadioButton.isSelected())
-                    addNewUser();
+                    try {
+                        addNewUser();
+                    } catch (BadInputException e1) {
+                        e1.printStackTrace();
+                    }
                 else if (deleteUserRadioButton.isSelected())
-                    deleteUser();
+                    try {
+                        deleteUser();
+                    } catch (BadInputException e1) {
+                        e1.printStackTrace();
+                    }
                 else if (updateUserRadioButton.isSelected())
-                    updateUsers();
+                    try {
+                        updateUsers();
+                    } catch (BadInputException e1) {
+                        e1.printStackTrace();
+                    }
             }
         });
         manageTrans.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (showTransRadioButton.isSelected())
-                    showAllTrans();
+                    try {
+                        showAllTrans();
+                    } catch (BadInputException e1) {
+                        e1.printStackTrace();
+                    }
                 else if (addTransRadioButton.isSelected())
-                    addTrans();
+                    try {
+                        addTrans();
+                    } catch (BadInputException e1) {
+                        e1.printStackTrace();
+                    }
             }
         });
     }
@@ -202,7 +247,7 @@ public class GUI extends JFrame implements ItemListener {
     /**
      *
      */
-    private void showAllVehicles() {
+    private void showAllVehicles() throws BadInputException {
         JPanel topPanel = new JPanel();
         topPanel.setSize(400, 300);
         topPanel.setLayout(new BorderLayout());
@@ -235,7 +280,7 @@ public class GUI extends JFrame implements ItemListener {
     /**
      *
      */
-    private void addNewVehicle() {
+    private void addNewVehicle() throws BadInputException {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
         getContentPane().add(panel);
@@ -256,7 +301,7 @@ public class GUI extends JFrame implements ItemListener {
         panel.add(new JTextField(6));
         panel.add(new JLabel("Vehicle type:"));
 
-        // Add Car/Truck/Motorcyle Button Selection
+        // Add Car/Truck/Motorcycle Button Selection
         JRadioButton car = new JRadioButton("Passenger Car");
         car.setSelected(true);
         JRadioButton truck = new JRadioButton("Truck");
@@ -287,7 +332,7 @@ public class GUI extends JFrame implements ItemListener {
     /**
      *
      */
-    private void deleteVehicle() {
+    private void deleteVehicle() throws BadInputException {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
         getContentPane().add(panel);
@@ -305,7 +350,7 @@ public class GUI extends JFrame implements ItemListener {
     /**
      *
      */
-    private void searchVehicleByVin() {
+    private void searchVehicleByVin() throws BadInputException {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
         getContentPane().add(panel);
@@ -323,7 +368,7 @@ public class GUI extends JFrame implements ItemListener {
     /**
      *
      */
-    private void searchVehicleByPrice() {
+    private void searchVehicleByPrice() throws BadInputException {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
         getContentPane().add(panel);
@@ -361,7 +406,7 @@ public class GUI extends JFrame implements ItemListener {
     /**
      *
      */
-    private void showAllUsers() {
+    private void showAllUsers() throws BadInputException {
         JPanel topPanel = new JPanel();
         topPanel.setSize(400, 300);
         topPanel.setLayout(new BorderLayout());
@@ -391,7 +436,7 @@ public class GUI extends JFrame implements ItemListener {
     /**
      *
      */
-    private void addNewUser() {
+    private void addNewUser() throws BadInputException {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
         getContentPane().add(panel);
@@ -428,7 +473,7 @@ public class GUI extends JFrame implements ItemListener {
     /**
      *
      */
-    private void deleteUser() {
+    private void deleteUser() throws BadInputException {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
         getContentPane().add(panel);
@@ -446,7 +491,7 @@ public class GUI extends JFrame implements ItemListener {
     /**
      *
      */
-    private void updateUsers() {
+    private void updateUsers() throws BadInputException {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
         getContentPane().add(panel);
@@ -464,7 +509,7 @@ public class GUI extends JFrame implements ItemListener {
     /**
      *
      */
-    private void showAllTrans() {
+    private void showAllTrans() throws BadInputException {
         JPanel topPanel = new JPanel();
         topPanel.setSize(400, 300);
         topPanel.setLayout(new BorderLayout());
@@ -494,7 +539,7 @@ public class GUI extends JFrame implements ItemListener {
     /**
      *
      */
-    private void addTrans() {
+    private void addTrans() throws BadInputException {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
         getContentPane().add(panel);
