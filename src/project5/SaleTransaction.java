@@ -14,11 +14,11 @@ import java.util.Date;
  * @author vangelis
  */
 public class SaleTransaction implements Serializable {
-    private int customerId;
-    private int employeeId;
-    private String vin;
-    private Date date;
-    private float salePrice;
+    protected int customerId;
+    protected int employeeId;
+    protected String vin;
+    protected Date date;
+    protected float salePrice;
 
     /**
      * Constructor initializes a SaleTransaction object with the provided values.
