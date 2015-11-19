@@ -200,15 +200,15 @@ public class GUI extends JFrame implements ItemListener {
                         e1.printStackTrace();
                     }
         });
-        manageTrans.addActionListener(e->{
-                if (showTransRadioButton.isSelected())
-                        showAllTrans();
-                else if (addTransRadioButton.isSelected())
-                    try {
-                        addTrans();
-                    } catch (BadInputException e1) {
-                        e1.printStackTrace();
-                    }
+        manageTrans.addActionListener(e -> {
+            if (showTransRadioButton.isSelected())
+                showAllTrans();
+            else if (addTransRadioButton.isSelected())
+                try {
+                    addTrans();
+                } catch (BadInputException e1) {
+                    e1.printStackTrace();
+                }
         });
     }
     
@@ -233,6 +233,7 @@ public class GUI extends JFrame implements ItemListener {
         for(int i = 0; i < data.size(); i++){
             dataValues[i] = data.get(i);
         }
+
         // Create a new table instance
         JTable table = new JTable(dataValues, columnNames);
         table.setFillsViewportHeight(true);
@@ -408,10 +409,13 @@ public class GUI extends JFrame implements ItemListener {
         // Create columns names
         String columnNames[] = {"ID", "FIRST NAME", "LAST NAME"};
 
-        String dataValues[][] = {
-                {"777586", "Luke", "Skywalker"},
-                {"134882", "Darth", "Vader"},
-        };
+        // Create some data
+        ArrayList<String[]> data = database.showAllUsers();
+
+        String dataValues[][]={};
+        for(int i = 0; i < data.size(); i++){
+            dataValues[i] = data.get(i);
+        }
 
         // Create a new table instance
         JTable table = new JTable(dataValues, columnNames);
@@ -421,17 +425,8 @@ public class GUI extends JFrame implements ItemListener {
         JScrollPane scrollPane = new JScrollPane(table);
         topPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Print Options
-        String Options[] = {"Show Users", "Cancel"};
-        int opt = JOptionPane.showOptionDialog(this, topPanel, "Search results", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
-
-        /*if (opt == 0){
-            for (User u : users) {
-                u.print();
-            }
-        } else {
-
-        }*/
+        // Print Results
+        JOptionPane.showMessageDialog(this, topPanel, "Search results", JOptionPane.PLAIN_MESSAGE);
     }
 
     /**
@@ -443,6 +438,21 @@ public class GUI extends JFrame implements ItemListener {
         getContentPane().add(panel);
         panel.setLayout(new FormLayout());
 
+        // Add Customer/Employee button selection
+        panel.add(new JLabel("User type:"));
+        JRadioButton customer = new JRadioButton("Customer");
+        customer.setSelected(true);
+        JRadioButton employee = new JRadioButton("Employee");
+        ButtonGroup group = new ButtonGroup();
+        group.add(customer);
+        group.add(employee);
+
+        // Add organized button panel
+        JPanel radiosPanel = new JPanel(new FlowLayout());
+        radiosPanel.add(customer);
+        radiosPanel.add(employee);
+        panel.add(radiosPanel);
+
         // Add User Text Fields
         panel.add(new JLabel("ID"));
         panel.add(new JTextField(6));
@@ -450,36 +460,47 @@ public class GUI extends JFrame implements ItemListener {
         panel.add(new JTextField(20));
         panel.add(new JLabel("Last Name"));
         panel.add(new JTextField(20));
-        panel.add(new JLabel("User type:"));
 
-        // Add Customer/Employee button selection
-        JRadioButton user = new JRadioButton("Customer");
-        user.setSelected(true);
-        JRadioButton emp = new JRadioButton("Employee");
-        ButtonGroup group = new ButtonGroup();
-        group.add(user);
-        group.add(emp);
+        JLabel ex3 = new JLabel("Phone");
+        panel.add(ex3);
+        panel.add(new JTextField(20));
+        JLabel ex4 = new JLabel("Drivers License");
+        panel.add(ex4);
+        panel.add(new JTextField(20));
 
-        // Add organized button panel
-        JPanel radiosPanel = new JPanel(new FlowLayout());
-        radiosPanel.add(user);
-        radiosPanel.add(emp);
-        panel.add(radiosPanel);
+        customer.addActionListener(e -> {
+            ex3.setText("Phone");
+            ex4.setText("Drivers License");
+        });
+        employee.addActionListener(e -> {
+            ex3.setText("Monthly Salary");
+            ex4.setText("Bank Account");
+        });
 
         // Print Options
         String Options[] = {"Add User", "Cancel"};
         int opt = JOptionPane.showOptionDialog(this, panel, "Add new vehicle", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
 
-        /*if (opt == 0) {
+        if (opt == 0) {
             ArrayList<String> text = new ArrayList<>();
-            for (Component comp : this.getComponents()){
+            int userType = -1;
+            for (Component comp : panel.getComponents()) {
+                if (comp instanceof JRadioButton) {
+                    if (((JRadioButton) comp).isSelected()) {
+                        try {
+                            userType = Integer.parseInt(((JRadioButton) comp).getText());
+                        } catch (Exception e) {
+                            throw new BadInputException("Unable to determine User Type");
+                        }
+                    }
+                }
 
+                if (comp instanceof JTextArea)
+                    text.add(((JTextField) comp).getText());
             }
-
+            database.addNewUser(userType, text.get(0), text.get(1), text.get(2), text.get(3), text.get(4), text.get(5), text.get(6));
             JOptionPane.showMessageDialog(null, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
-        } else {
-
-        }*/
+        }
     }
 
     /**
@@ -531,10 +552,12 @@ public class GUI extends JFrame implements ItemListener {
         // Create columns names
         String columnNames[] = {"VIN","CUSTOMER ID", "EMPLOYEE ID", "DATE", "PRICE"};
 
-        String dataValues[][] = {
-                {"SDF34", "777586", "000022", "11/20/2015", "15000"},
-                {"DF6S1", "134882", "000022","12/24/2014", "12000"},
-        };
+        ArrayList<String[]> data = database.showAllSales();
+
+        String dataValues[][]={};
+        for(int i = 0; i < data.size(); i++){
+            dataValues[i] = data.get(i);
+        }
 
         // Create a new table instance
         JTable table = new JTable(dataValues, columnNames);
@@ -572,6 +595,26 @@ public class GUI extends JFrame implements ItemListener {
 
         // Print Options
         String Options[] = {"Add Transaction", "Cancel"};
-        JOptionPane.showOptionDialog(this, panel, "Add new transaction", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
+        int opt = JOptionPane.showOptionDialog(this, panel, "Add new transaction", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
+
+        if (opt == 0) {
+            ArrayList<String> text = new ArrayList<>();
+            for (Component comp : panel.getComponents()) {
+                if (comp instanceof JRadioButton) {
+                    if (((JRadioButton) comp).isSelected()) {
+                        try {
+                            //userType = Integer.parseInt(((JRadioButton) comp).getText());
+                        } catch (Exception e) {
+                            throw new BadInputException("Unable to determine Sale transaction");
+                        }
+                    }
+                }
+
+                if (comp instanceof JTextArea)
+                    text.add(((JTextField) comp).getText());
+            }
+            database.addNew(text.get(0), text.get(1), text.get(2), text.get(3), text.get(4), text.get(5), text.get(6));
+            JOptionPane.showMessageDialog(null, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
+        }
     }
 }

@@ -48,7 +48,6 @@ public class Database {
     private final List<Vehicle> vehicleInventory; 
     private final List<User> users;
     private final List<SaleTransaction> transactions;
-    private Scanner sc;
     private int userIdCounter = 1;
 
     /**
@@ -59,7 +58,6 @@ public class Database {
         this.vehicleInventory = new ArrayList<Vehicle>();
         this.users = new ArrayList<User>();
         this.transactions = new ArrayList<SaleTransaction>();
-        sc = new Scanner(System.in);
     }
     
 
@@ -70,7 +68,6 @@ public class Database {
         this.vehicleInventory = vehicleInventory;
         this.users = users;
         this.transactions = transactions;
-        sc = new Scanner(System.in);
     }
 
     /**
@@ -135,16 +132,14 @@ public class Database {
             }catch(Exception e){
                 throw new BadInputException("Invalid displacement value.");
             }
-        } else {
-            System.out.println("Unknown vehicle type entered. Please try again.");
         }
     }
 
     
     public void searchVehicle() {
-        sc.nextLine();
+
         System.out.print("\nEnter VIN of vehicle to search for (string): ");
-        String vin = sc.nextLine();
+        String vin =
         
         List<Vehicle> matchingVehicle = new ArrayList<Vehicle>();
         for (Vehicle v : vehicleInventory) {
@@ -163,9 +158,8 @@ public class Database {
      * @param sc The scanner object used to read user input.
      */
     public void deleteVehicle() {
-        sc.nextLine();
         System.out.print("\nEnter VIN of vehicle to delete (string): ");
-        String vin = sc.nextLine();
+        String vin = ;
         
         for (Vehicle v : vehicleInventory) {
             if (v.getVin().equals(vin)) {
@@ -210,21 +204,17 @@ public class Database {
      * @param sc The scanner object used to read user input.
      */
     public void showVehiclesByPrice() throws BadInputException {
-        System.out.print("\nEnter low price value (float): ");
-        float lowValue = sc.nextFloat();
+
+        float lowValue =
         if (lowValue < 0.0f)
             throw new BadInputException("Low price cannot be negative.");
         
-        System.out.print("\nEnter high price value (float): ");
-        float highValue = sc.nextFloat();
+
+        float highValue =
         if (highValue < 0.0f)
             throw new BadInputException("High price cannot be negative.");
 
-        System.out.println("\nSelect vehicle type:\n"
-                + "1. Passenger car\n"
-                + "2. Truck\n"
-                + "3. Motorcycle");
-        int vehicleType = sc.nextInt();
+        int vehicleType = ;
         if (vehicleType < 1 || vehicleType > 3)
             throw new BadInputException("Legal vehicle type values: 1-3.");
         
@@ -241,7 +231,7 @@ public class Database {
         }
         
         if (matchingVehicles.size() == 0)
-            System.out.println("\nNo matching vehicles found.");
+            ;
         else
             showVehicles(matchingVehicles);
     }
@@ -251,47 +241,29 @@ public class Database {
      * @param sc The scanner object used to read user input.
      * @throws Database BadInputException
      */
-    public void addNewUser() throws BadInputException {
-        System.out.println("Select user type:\n"
-                + "1. Customer\n"
-                + "2. Employee");
-        int userType = sc.nextInt();
+    public void addNewUser(int userType, String id, String fname, String lname, String ph, String dl, String ex3, String ex4) throws BadInputException {
+
         if (userType < 1 || userType > 3)
             throw new BadInputException("Legal user type values: 1-2.");
-        
-        sc.nextLine();
-        System.out.print("\nEnter first name (string): ");
-        String firstName = sc.nextLine();
-        
-        System.out.print("\nEnter last name (string): ");
-        String lastName = sc.nextLine();
-        
+
         if (userType == 1) {
-            System.out.print("\nEnter phone number (string): ");
-            String phoneNumber = sc.nextLine();
-            
-            System.out.print("\nEnter driver license number (int): ");
-            int dlnumber = sc.nextInt();
+            String phoneNumber = ph;
+            int dlnumber = Integer.parseInt(dl);
             if (dlnumber < 0)
                 throw new BadInputException("Driver license number cannot be negative.");
 
-            users.add(new Customer(userIdCounter++, firstName, lastName, 
+            users.add(new Customer(userIdCounter++, fname, lname,
                     phoneNumber, dlnumber));
         } else if (userType == 2) {
-            System.out.print("\nEnter monthly salary (float): ");
-            float monthlySalary = sc.nextFloat();
+            float monthlySalary = Float.parseFloat(ex3);
             if (monthlySalary < 0.0f)
                 throw new BadInputException("Monthly salary cannot be negative.");
-            
-            System.out.print("\nEnter bank account number (int): ");
-            int bankAccNumber = sc.nextInt();
+            int bankAccNumber = Integer.parseInt(ex4);
             if (bankAccNumber < 0)
                 throw new BadInputException("Driver license number cannot be negative.");
-            
-            users.add(new Employee(userIdCounter++, firstName, lastName, 
+
+            users.add(new Employee(userIdCounter++, fname, lname,
                     monthlySalary, bankAccNumber));
-        } else {
-            System.out.println("Unknown user type. Please try again.");
         }
     }
 
@@ -301,8 +273,8 @@ public class Database {
      * @throws Database BadInputException
      */
     public void updateUser() throws BadInputException {
-        System.out.print("\nEnter user ID: ");
-        int userID = sc.nextInt();
+
+        int userID = ;
         
         User user = null;
         for (User u : users) {
@@ -314,20 +286,15 @@ public class Database {
             System.out.println("User not found.");
             return;
         }
-        
-        sc.nextLine();
-        System.out.print("\nEnter first name (string): ");
-        String firstName = sc.nextLine();
-        
-        System.out.print("\nEnter last name (string): ");
-        String lastName = sc.nextLine();
+
+        String firstName = ;
+
+        String lastName = ;
         
         if (user instanceof Customer) {
-            System.out.print("\nEnter phone number (string): ");
-            String phoneNumber = sc.nextLine();
-            
-            System.out.print("\nEnter driver license number (int): ");
-            int dlnumber = sc.nextInt();
+            String phoneNumber = ;
+
+            int dlnumber = ;
             if (dlnumber < 0)
                 throw new BadInputException("Driver license number cannot be negative.");
             
@@ -337,13 +304,11 @@ public class Database {
             ((Customer)user).setDriverLicenceNumber(dlnumber);
             
         } else { //User is an employee
-            System.out.print("\nEnter monthly salary (float): ");
-            float monthlySalary = sc.nextFloat();
+            float monthlySalary = ;
             if (monthlySalary < 0.0f)
                 throw new BadInputException("Monthly salary cannot be negative.");
-            
-            System.out.print("\nEnter bank account number (int): ");
-            int bankAccNumber = sc.nextInt();
+
+            int bankAccNumber = ;
             if (bankAccNumber < 0)
                 throw new BadInputException("Driver license number cannot be negative.");
             
@@ -357,28 +322,29 @@ public class Database {
     /**
      * Prints out a list of all users in the database.
      */
-    public void showAllUsers() {
-        System.out.println("---------------------------------------------------"
-                + "------------------------------------------");
-        System.out.format("| %10s | %9s | %12s | %12s | %25s          | %n", 
-                "USER TYPE", "USER ID", "FIST NAME", "LAST NAME", "OTHER DETAILS");
-        System.out.println("---------------------------------------------------"
-                + "------------------------------------------");
+    private ArrayList<String[]>  showUsers(List<User> users) {
+        ArrayList<String[]> userList = new ArrayList<>();
+        String user[] = {"","",""};
+
         for (User u : users) {
-            u.print();
+            user[0] = Integer.toString(u.id);
+            user[1] = u.firstName;
+            user[2] = u.lastName;
+
+            userList.add(user);
         }
-        System.out.println("---------------------------------------------------"
-                + "------------------------------------------");
+
+        return userList;
     }
+
+    public ArrayList<String[]> showAllUsers() { return showUsers(users); }
 
     /**
      * This method is used to complete a vehicle sale transaction.
-     * @param sc The scanner object used to read user input.
      * @throws Database BadInputException
      */
     public void sellVehicle() throws BadInputException {
-        System.out.print("\nEnter customer ID (int): ");
-        int customerId = sc.nextInt();
+        int customerId = ;
         //Check that the customer exists in database
         boolean customerExists = false;
         for (User u : users) {
@@ -386,13 +352,10 @@ public class Database {
                 customerExists = true;
         }
         if (!customerExists) {
-            System.out.print("\nThe customer ID you have entered does not exist in the database.\n"
-                    + "Please add the customer to the database first and then try again.");
             return;
         }
-        
-        System.out.print("\nEnter employee ID (int): ");
-        int employeeId = sc.nextInt();
+
+        int employeeId = ;
         //Check that the employee exists in database
         boolean employeeExists = false;
         for (User u : users) {
@@ -400,26 +363,19 @@ public class Database {
                 employeeExists = true;
         }
         if (!employeeExists) {
-            System.out.print("\nThe employee ID you have entered does not exist in the database.\n"
-                    + "Please add the employee to the database first and then try again.");
             return;
         }
-        
-        sc.nextLine();
-        System.out.print("\nEnter VIN (string): ");
-        String vin = sc.nextLine();
+
+        String vin = ;
         //Check that the vehicle exists in database
         Vehicle v = findVehicle(vin);
         if (v == null) {
-            System.out.print("\nThe vehicle with the VIN you are trying to sell "
-                    + "does not exist in the database. Aborting transaction.");
             return;
         }
         
         Date currentDate = new Date(System.currentTimeMillis());
-        
-        System.out.print("\nEnter sale price (float): ");
-        float price = sc.nextFloat();
+
+        float price = ;
         if (price < 0.0f)
             throw new BadInputException("Sale price cannot be negative.");
         
@@ -434,11 +390,24 @@ public class Database {
     /**
      * Prints out a list of all recorded transactions.
      */
-    public void showAllSales() {
+    private ArrayList<String[]> showSales(List<SaleTransaction> transactions) {
+        ArrayList<String[]> salesList = new ArrayList<>();
+        String transaction[] = {"","","","",""};
+
         for (SaleTransaction sale : transactions) {
-            System.out.println(sale.toString());
+            transaction[0] = Integer.toString(sale.customerId);
+            transaction[1] = Integer.toString(sale.employeeId);
+            transaction[2] = sale.vin;
+            transaction[3] = String.valueOf(sale.date);
+            transaction[4] = Float.toString(sale.salePrice);
+
+            salesList.add(transaction);
         }
+
+        return salesList;
     }
+
+    public ArrayList<String[]> showAllSales() { return showSales(transactions); }
     
     /**
      * Auxiliary method used to find a vehicle in the database, given its
@@ -501,7 +470,6 @@ public class Database {
      * @param cds
      */
     public void writeDatabase() {
-        System.out.print("Writing database...");
         //serialize the database
         OutputStream file = null;
         OutputStream buffer = null;
