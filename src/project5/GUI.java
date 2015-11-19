@@ -728,7 +728,7 @@ public class GUI extends JFrame implements ItemListener {
                 if (comp instanceof JTextArea)
                     text.add(((JTextField) comp).getText());
             }
-            database.sellVehicle(text.get(0), text.get(1), text.get(2), text.get(3), text.get(4), text.get(5), text.get(6));
+            database.sellVehicle(text.get(0), text.get(1), text.get(2), text.get(3));
             JOptionPane.showMessageDialog(null, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
         }
     }

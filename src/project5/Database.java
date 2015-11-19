@@ -304,6 +304,9 @@ public class Database {
         if (user == null) {
             throw new BadInputException("NO User Found.");
         }
+
+        String firstName = fname;
+        String lastName = lname;
         
         if (user instanceof Customer) {
             String phoneNumber = ph;
