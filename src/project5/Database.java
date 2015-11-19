@@ -41,7 +41,7 @@ import java.util.Scanner;
  * 9. Sell a vehicle.
  * 10. Show a list of completed sale transactions        
  * 11. Exit program.
- * @author vangelis
+ * @author vangelis 
  */
 public class Database {
     
@@ -136,47 +136,44 @@ public class Database {
                 throw new BadInputException("Invalid displacement value.");
             }
         } else {
-            System.out.println("Unknown vehicle type entered. Please try again.");
+            throw new BadInputException("Invalid Vehicle Type");
         }
     }
 
-    
-    public void searchVehicle() {
-        sc.nextLine();
-        System.out.print("\nEnter VIN of vehicle to search for (string): ");
-        String vin = sc.nextLine();
-        
-        List<Vehicle> matchingVehicle = new ArrayList<Vehicle>();
+    /**
+     *
+     * @param vin
+     * @return
+     */
+    public ArrayList<String[]> searchVehicle(String vin) {
+        List<Vehicle> matchingVehicle = new ArrayList<>();
         for (Vehicle v : vehicleInventory) {
             if (v.getVin().equals(vin)) {
                 matchingVehicle.add(v);
-                showVehicles(matchingVehicle);
-                return;
+                return showVehicles(matchingVehicle);
             }
         }
-        System.out.println("Vehicle with VIN " + vin + " not found in the database"); 
+        return new ArrayList<>();
     }
     
     
     /**
      * This method allows the user to delete a vehicle from the inventory database.
-     * @param sc The scanner object used to read user input.
+     * @param vin The String object containing the car vin.
      */
-    public void deleteVehicle() {
-        sc.nextLine();
-        System.out.print("\nEnter VIN of vehicle to delete (string): ");
-        String vin = sc.nextLine();
-        
+    public boolean deleteVehicle(String vin) {
         for (Vehicle v : vehicleInventory) {
             if (v.getVin().equals(vin)) {
                 vehicleInventory.remove(v);
-                break;
+                return true;
             }
         }
+        return false;
     }
     
     /**
      * Auxilary private method to print out a list of vehicles in a formatted manner.
+     * @param vehicles List object containing the list of cars in the database
      */
     private ArrayList<String[]> showVehicles(List<Vehicle> vehicles) {
         ArrayList<String[]> vehicleList = new ArrayList<>();
@@ -207,48 +204,50 @@ public class Database {
     /**
      * This method allows the user to search for vehicles within a price range.
      * The list of vehicles found is printed out.
-     * @param sc The scanner object used to read user input.
+     * @param Low minimum price range
+     * @param High maximum price range
+     * @param vehicleType vehicle type
      */
-    public void showVehiclesByPrice() throws BadInputException {
-        System.out.print("\nEnter low price value (float): ");
-        float lowValue = sc.nextFloat();
-        if (lowValue < 0.0f)
-            throw new BadInputException("Low price cannot be negative.");
-        
-        System.out.print("\nEnter high price value (float): ");
-        float highValue = sc.nextFloat();
-        if (highValue < 0.0f)
-            throw new BadInputException("High price cannot be negative.");
+    public ArrayList<String[]> showVehiclesByPrice(String Low, String High, int vehicleType) throws BadInputException {
+        float high, low;
 
-        System.out.println("\nSelect vehicle type:\n"
-                + "1. Passenger car\n"
-                + "2. Truck\n"
-                + "3. Motorcycle");
-        int vehicleType = sc.nextInt();
+        try {
+            low = Float.parseFloat(Low);
+            if (low < 0.0f)
+                throw new BadInputException("Low price cannot be negative.");
+
+            high = Float.parseFloat(High);
+            if (high < 0.0f)
+                throw new BadInputException("High price cannot be negative.");
+        }catch (Exception e){
+            throw new BadInputException("Invalid Low or High price range.");
+        }
         if (vehicleType < 1 || vehicleType > 3)
             throw new BadInputException("Legal vehicle type values: 1-3.");
         
         ArrayList<Vehicle> matchingVehicles = new ArrayList<Vehicle>();
         for (Vehicle v : vehicleInventory) {
-            if (v.getPrice() >= lowValue && v.getPrice() <= highValue) {
+            if (v.getPrice() >= low && v.getPrice() <= high) {
                 if (vehicleType == 1 && v instanceof PassengerCar)
                     matchingVehicles.add(v);
                 else if (vehicleType == 2 && v instanceof Truck)
                     matchingVehicles.add(v);
                 else if (vehicleType == 3 && v instanceof Motorcycle)
                     matchingVehicles.add(v);
+                else
+                    throw new BadInputException("Invalid Vehicle Type");
             }
         }
         
-        if (matchingVehicles.size() == 0)
-            System.out.println("\nNo matching vehicles found.");
+        if (matchingVehicles.size() != 0)
+            return showVehicles(matchingVehicles);
         else
-            showVehicles(matchingVehicles);
+            return new ArrayList<>();
     }
 
     /**
      * This method allows a new user to be added to the database.
-     * @param sc The scanner object used to read user input.
+     * @param
      * @throws Database BadInputException
      */
     public void addNewUser() throws BadInputException {
@@ -297,7 +296,7 @@ public class Database {
 
     /**
      * This method can be used to update a user's information, given their user ID.
-     * @param sc The scanner object used to read user input.
+     * @param
      * @throws Database BadInputException
      */
     public void updateUser() throws BadInputException {
@@ -373,7 +372,7 @@ public class Database {
 
     /**
      * This method is used to complete a vehicle sale transaction.
-     * @param sc The scanner object used to read user input.
+     * @param
      * @throws Database BadInputException
      */
     public void sellVehicle() throws BadInputException {
@@ -498,7 +497,7 @@ public class Database {
     /**
      * This method is used to save the Database database as a 
      * serializable object.
-     * @param cds
+     * @param
      */
     public void writeDatabase() {
         System.out.print("Writing database...");
