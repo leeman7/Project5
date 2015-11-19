@@ -180,11 +180,7 @@ public class GUI extends JFrame implements ItemListener {
         });
         manageUsers.addActionListener(e->{
                 if (showUsersRadioButton.isSelected())
-                    try {
                         showAllUsers();
-                    } catch (BadInputException e1) {
-                        e1.printStackTrace();
-                    }
                 else if (addUserRadioButton.isSelected())
                     try {
                         addNewUser();
@@ -206,11 +202,7 @@ public class GUI extends JFrame implements ItemListener {
         });
         manageTrans.addActionListener(e->{
                 if (showTransRadioButton.isSelected())
-                    try {
                         showAllTrans();
-                    } catch (BadInputException e1) {
-                        e1.printStackTrace();
-                    }
                 else if (addTransRadioButton.isSelected())
                     try {
                         addTrans();
@@ -407,7 +399,7 @@ public class GUI extends JFrame implements ItemListener {
     /**
      *
      */
-    private void showAllUsers() throws BadInputException {
+    private void showAllUsers() {
         JPanel topPanel = new JPanel();
         topPanel.setSize(400, 300);
         topPanel.setLayout(new BorderLayout());
@@ -530,7 +522,7 @@ public class GUI extends JFrame implements ItemListener {
     /**
      *
      */
-    private void showAllTrans() throws BadInputException {
+    private void showAllTrans() {
         JPanel topPanel = new JPanel();
         topPanel.setSize(400, 300);
         topPanel.setLayout(new BorderLayout());
