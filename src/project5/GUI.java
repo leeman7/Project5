@@ -177,6 +177,14 @@ public class GUI extends JFrame implements ItemListener {
                     updateUsers();
             }
         });
+        manageTrans.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (showTransRadioButton.isSelected())
+                    showAllTrans();
+                else if (addTransRadioButton.isSelected())
+                    addTrans();
+            }
+        });
     }
     
     public void itemStateChanged(ItemEvent evt) {
@@ -250,7 +258,6 @@ public class GUI extends JFrame implements ItemListener {
         
         panel.add(new JLabel("Extra info 1"));
         panel.add(new JTextField(20));
-        
         panel.add(new JLabel("Extra info 2"));
         panel.add(new JTextField(20));
         
@@ -336,7 +343,7 @@ public class GUI extends JFrame implements ItemListener {
 
     private void addNewUser() {
         JPanel panel = new JPanel();
-        panel.setSize(400, 400);
+        panel.setSize(400, 300);
         getContentPane().add(panel);
         panel.setLayout(new FormLayout());
 
@@ -364,7 +371,6 @@ public class GUI extends JFrame implements ItemListener {
         String Options[] = {"Add User"};
 
         JOptionPane.showOptionDialog(this, panel, "Add new vehicle", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
-
     }
 
     private void deleteUser() {
@@ -375,10 +381,72 @@ public class GUI extends JFrame implements ItemListener {
 
         panel.add(new JLabel("Enter ID"));
         panel.add(new JTextField(5));
-        JOptionPane.showMessageDialog(this, panel, "Delete user", JOptionPane.PLAIN_MESSAGE);
+
+        String Option[] = {"Delete User"};
+
+        JOptionPane.showOptionDialog(this, panel, "Delete user", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Option, Option[0]);
     }
 
     private void updateUsers() {
+        JPanel panel = new JPanel();
+        panel.setSize(400, 300);
+        getContentPane().add(panel);
+        panel.setLayout(new FormLayout());
 
+        panel.add(new JLabel("Enter ID"));
+        panel.add(new JTextField(5));
+
+        String Option[] = {"Update User"};
+
+        JOptionPane.showOptionDialog(this, panel, "Search Users to update", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Option, Option[0]);
+    }
+
+    private void showAllTrans() {
+        JPanel topPanel = new JPanel();
+        topPanel.setSize(400, 300);
+        topPanel.setLayout(new BorderLayout());
+        getContentPane().add(topPanel);
+
+        // Create columns names
+        String columnNames[] = {"VIN","CUSTOMER ID", "EMPLOYEE ID", "DATE", "PRICE"};
+
+        String dataValues[][] = {
+                {"SDF34", "777586", "000022", "11/20/2015", "15000"},
+                {"DF6S1", "134882", "000022","12/24/2014", "12000"},
+        };
+
+        // Create a new table instance
+        JTable table = new JTable(dataValues, columnNames);
+        table.setFillsViewportHeight(true);
+
+        // Add the table to a scrolling pane
+        JScrollPane scrollPane = new JScrollPane(table);
+        topPanel.add(scrollPane, BorderLayout.CENTER);
+
+        String Options[] = {"Show Transactions"};
+
+        JOptionPane.showOptionDialog(this, topPanel, "Search results", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
+    }
+
+    private void addTrans() {
+        JPanel panel = new JPanel();
+        panel.setSize(400, 300);
+        getContentPane().add(panel);
+        panel.setLayout(new FormLayout());
+
+        panel.add(new JLabel("VIN"));
+        panel.add(new JTextField(5));
+        panel.add(new JLabel("Customer ID"));
+        panel.add(new JTextField(6));
+        panel.add(new JLabel("Employee ID"));
+        panel.add(new JTextField(6));
+        panel.add(new JLabel("Date"));
+        panel.add(new JTextField(10));
+        panel.add(new JLabel("Sale Price"));
+        panel.add(new JTextField(7));
+
+        String Options[] = {"Add Transaction"};
+
+        JOptionPane.showOptionDialog(this, panel, "Add new transaction", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
     }
 }
