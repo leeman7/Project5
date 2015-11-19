@@ -14,6 +14,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class GUI extends JFrame implements ItemListener {
+    //
     private JPanel cards; //a panel that uses CardLayout
     private final static String vehicleMngmt = "Vehicle Managment";
     private final static String userMngmt = "User Management";
@@ -39,14 +40,17 @@ public class GUI extends JFrame implements ItemListener {
     private JRadioButton addTransRadioButton;
     private JButton manageTrans;
 
+    // Setup GUI
     public GUI() throws HeadlessException {
         super("Dealership");
         initializeGui();
         initializeEvents();
     }
-    
+
+    /**
+     *
+     */
     private void initializeGui() {
-      
         this.setSize(500, 400);
         Dimension windowSize = this.getSize();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -145,7 +149,10 @@ public class GUI extends JFrame implements ItemListener {
         this.add(comboBoxPane, BorderLayout.PAGE_START);
         this.add(cards, BorderLayout.CENTER);
     }
-    
+
+    /**
+     *
+     */
     private void initializeEvents() {
         manageVehicles.addActionListener(new ActionListener () { 
             public void actionPerformed(ActionEvent e) {
@@ -182,12 +189,19 @@ public class GUI extends JFrame implements ItemListener {
             }
         });
     }
-    
+
+    /**
+     *
+     * @param evt
+     */
     public void itemStateChanged(ItemEvent evt) {
         CardLayout cl = (CardLayout)(cards.getLayout());
         cl.show(cards, (String) evt.getItem());
     }
-    
+
+    /**
+     *
+     */
     private void showAllVehicles() {
         JPanel topPanel = new JPanel();
         topPanel.setSize(400, 300);
@@ -217,13 +231,17 @@ public class GUI extends JFrame implements ItemListener {
         String Options[] = {"Show Vehicles", "Cancel"};
         JOptionPane.showOptionDialog(this, topPanel, "Search results", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
     }
-    
+
+    /**
+     *
+     */
     private void addNewVehicle() {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
         getContentPane().add(panel);
         panel.setLayout(new FormLayout());
-        
+
+        // Add Vehicle Text fields
         panel.add(new JLabel("VIN"));
         panel.add(new JTextField(5));
         panel.add(new JLabel("Make"));
@@ -237,7 +255,8 @@ public class GUI extends JFrame implements ItemListener {
         panel.add(new JLabel("Price"));
         panel.add(new JTextField(6));
         panel.add(new JLabel("Vehicle type:"));
-        
+
+        // Add Car/Truck/Motorcyle Button Selection
         JRadioButton car = new JRadioButton("Passenger Car");
         car.setSelected(true);
         JRadioButton truck = new JRadioButton("Truck");
@@ -246,14 +265,15 @@ public class GUI extends JFrame implements ItemListener {
         group.add(car);
         group.add(truck);
         group.add(motorcycle);
-        
+
+        // Add organized button panel
         JPanel radiosPanel = new JPanel(new FlowLayout());
         radiosPanel.add(car);
         radiosPanel.add(truck);
         radiosPanel.add(motorcycle);
-        
         panel.add(radiosPanel);
-        
+
+        // Add Vehicle Text fields
         panel.add(new JLabel("Extra info 1"));
         panel.add(new JTextField(20));
         panel.add(new JLabel("Extra info 2"));
@@ -263,13 +283,17 @@ public class GUI extends JFrame implements ItemListener {
         String Options[] = {"Add Vehicle", "Cancel"};
         JOptionPane.showOptionDialog(this, panel, "Add new vehicle", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
     }
-    
+
+    /**
+     *
+     */
     private void deleteVehicle() {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
         getContentPane().add(panel);
         panel.setLayout(new FormLayout());
-        
+
+        // Add Vehicle Text fields
         panel.add(new JLabel("Enter VIN"));
         panel.add(new JTextField(5));
 
@@ -277,13 +301,17 @@ public class GUI extends JFrame implements ItemListener {
         String Options[] = {"Delete Vehicle", "Cancel"};
         JOptionPane.showOptionDialog(this, panel, "Delete vehicle", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
     }
-    
+
+    /**
+     *
+     */
     private void searchVehicleByVin() {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
         getContentPane().add(panel);
         panel.setLayout(new FormLayout());
-        
+
+        // Add Vehicle Text fields
         panel.add(new JLabel("Enter VIN"));
         panel.add(new JTextField(5));
 
@@ -291,19 +319,24 @@ public class GUI extends JFrame implements ItemListener {
         String Options[] = {"Show Vehicle", "Cancel"};
         JOptionPane.showOptionDialog(this, panel, "Search vehicle by VIN", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
     }
-    
+
+    /**
+     *
+     */
     private void searchVehicleByPrice() {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
         getContentPane().add(panel);
         panel.setLayout(new FormLayout());
-        
+
+        // Add Vehicle Text fields
         panel.add(new JLabel("Minimum Price"));
         panel.add(new JTextField(6));
         panel.add(new JLabel("Maximum Price"));
         panel.add(new JTextField(6));
         panel.add(new JLabel("Vehicle type:"));
-        
+
+        // Add Car/Truck/Motorcyle Button Selection
         JRadioButton car = new JRadioButton("Passenger Car");
         car.setSelected(true);
         JRadioButton truck = new JRadioButton("Truck");
@@ -312,12 +345,12 @@ public class GUI extends JFrame implements ItemListener {
         group.add(car);
         group.add(truck);
         group.add(motorcycle);
-        
+
+        // Add organized button panel
         JPanel radiosPanel = new JPanel(new FlowLayout());
         radiosPanel.add(car);
         radiosPanel.add(truck);
         radiosPanel.add(motorcycle);
-        
         panel.add(radiosPanel);
 
         // Print Options
@@ -325,6 +358,9 @@ public class GUI extends JFrame implements ItemListener {
         JOptionPane.showOptionDialog(this, panel, "Search vehicles by price", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
     }
 
+    /**
+     *
+     */
     private void showAllUsers() {
         JPanel topPanel = new JPanel();
         topPanel.setSize(400, 300);
@@ -352,12 +388,16 @@ public class GUI extends JFrame implements ItemListener {
         JOptionPane.showOptionDialog(this, topPanel, "Search results", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
     }
 
+    /**
+     *
+     */
     private void addNewUser() {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
         getContentPane().add(panel);
         panel.setLayout(new FormLayout());
 
+        // Add User Text Fields
         panel.add(new JLabel("ID"));
         panel.add(new JTextField(6));
         panel.add(new JLabel("First Name"));
@@ -366,6 +406,7 @@ public class GUI extends JFrame implements ItemListener {
         panel.add(new JTextField(20));
         panel.add(new JLabel("User type:"));
 
+        // Add Customer/Employee button selection
         JRadioButton user = new JRadioButton("Customer");
         user.setSelected(true);
         JRadioButton emp = new JRadioButton("Employee");
@@ -373,10 +414,10 @@ public class GUI extends JFrame implements ItemListener {
         group.add(user);
         group.add(emp);
 
+        // Add organized button panel
         JPanel radiosPanel = new JPanel(new FlowLayout());
         radiosPanel.add(user);
         radiosPanel.add(emp);
-
         panel.add(radiosPanel);
 
         // Print Options
@@ -384,12 +425,16 @@ public class GUI extends JFrame implements ItemListener {
         JOptionPane.showOptionDialog(this, panel, "Add new vehicle", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
     }
 
+    /**
+     *
+     */
     private void deleteUser() {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
         getContentPane().add(panel);
         panel.setLayout(new FormLayout());
 
+        // Add User Text Fields
         panel.add(new JLabel("Enter ID"));
         panel.add(new JTextField(5));
 
@@ -398,12 +443,16 @@ public class GUI extends JFrame implements ItemListener {
         JOptionPane.showOptionDialog(this, panel, "Delete user", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Option, Option[0]);
     }
 
+    /**
+     *
+     */
     private void updateUsers() {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
         getContentPane().add(panel);
         panel.setLayout(new FormLayout());
 
+        // Add User Text fields
         panel.add(new JLabel("Enter ID"));
         panel.add(new JTextField(5));
 
@@ -412,6 +461,9 @@ public class GUI extends JFrame implements ItemListener {
         JOptionPane.showOptionDialog(this, panel, "Search Users to update", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
     }
 
+    /**
+     *
+     */
     private void showAllTrans() {
         JPanel topPanel = new JPanel();
         topPanel.setSize(400, 300);
@@ -439,12 +491,16 @@ public class GUI extends JFrame implements ItemListener {
         JOptionPane.showOptionDialog(this, topPanel, "Search results", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
     }
 
+    /**
+     *
+     */
     private void addTrans() {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
         getContentPane().add(panel);
         panel.setLayout(new FormLayout());
 
+        // Add Transaction text fields
         panel.add(new JLabel("VIN"));
         panel.add(new JTextField(5));
         panel.add(new JLabel("Customer ID"));
