@@ -124,99 +124,146 @@ public class GUI extends JFrame implements ItemListener {
         //manageVehicles.setActionCommand("OUCH!");
         userMngmtPanel.add(manageUsers);
 
-        // Transaction management
-        JPanel transMngmtPanel = new JPanel(new GridLayout(0, 1));
-        showTransRadioButton =  new JRadioButton("Show all sale transactions");
-        showTransRadioButton.setSelected(true);
-        addTransRadioButton = new JRadioButton("Add a new sale transaction");
-        
-        ButtonGroup transRadioGroup = new ButtonGroup();
-        transRadioGroup.add(showTransRadioButton);
-        transRadioGroup.add(addTransRadioButton);
-        
-        transMngmtPanel.add(showTransRadioButton);
-        transMngmtPanel.add(addTransRadioButton);
-        
-        manageTrans = new JButton("Go");
-        //manageVehicles.setActionCommand("OUCH!");
-        transMngmtPanel.add(manageTrans);
-        
-        cards.add(vehicleMngmtPanel, vehicleMngmt);
-        cards.add(userMngmtPanel, userMngmt);
-        cards.add(transMngmtPanel, transMngmt);
-        
-        this.add(comboBoxPane, BorderLayout.PAGE_START);
-        this.add(cards, BorderLayout.CENTER);
-    }
-    
+                    // Transaction management
+                    JPanel transMngmtPanel = new JPanel(new GridLayout(0, 1));
+            showTransRadioButton =  new JRadioButton("Show all sale transactions");
+            showTransRadioButton.setSelected(true);
+            addTransRadioButton = new JRadioButton("Add a new sale transaction");
+
+            ButtonGroup transRadioGroup = new ButtonGroup();
+            transRadioGroup.add(showTransRadioButton);
+            transRadioGroup.add(addTransRadioButton);
+
+            transMngmtPanel.add(showTransRadioButton);
+            transMngmtPanel.add(addTransRadioButton);
+
+            manageTrans = new JButton("Go");
+            //manageVehicles.setActionCommand("OUCH!");
+            transMngmtPanel.add(manageTrans);
+
+            cards.add(vehicleMngmtPanel, vehicleMngmt);
+            cards.add(userMngmtPanel, userMngmt);
+            cards.add(transMngmtPanel, transMngmt);
+
+            this.add(comboBoxPane, BorderLayout.PAGE_START);
+            this.add(cards, BorderLayout.CENTER);
+        }
+
     private void initializeEvents(){
         manageVehicles.addActionListener(e->{
-                if (showVehiclesRadioButton.isSelected())
-                    showAllVehicles();
-                else if (addVehicleRadioButton.isSelected())
-                    try {
-                        addNewVehicle();
-                    } catch (BadInputException e1) {
-                        e1.printStackTrace();
-                    }
-                else if (deleteVehicleRadioButton.isSelected())
-                    try {
-                        deleteVehicle();
-                    } catch (BadInputException e1) {
-                        e1.printStackTrace();
-                    }
-                else if (searchByVinRadioButton.isSelected())
-                    try {
-                        searchVehicleByVin();
-                    } catch (BadInputException e1) {
-                        e1.printStackTrace();
-                    }
-                else if (searchByPriceRadioButton.isSelected())
-                    try {
-                        searchVehicleByPrice();
-                    } catch (BadInputException e1) {
-                        e1.printStackTrace();
-                    }
+            if (showVehiclesRadioButton.isSelected())
+                showAllVehicles();
+            else if (addVehicleRadioButton.isSelected()) {
+                try {
+                    addNewVehicle();
+                } catch (BadInputException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            else if (deleteVehicleRadioButton.isSelected()) {
+                try {
+                    deleteVehicle();
+                } catch (BadInputException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            else if (searchByVinRadioButton.isSelected()) {
+                try {
+                    searchVehicleByVin();
+                } catch (BadInputException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            else if (searchByPriceRadioButton.isSelected()) {
+                try {
+                    searchVehicleByPrice();
+                } catch (BadInputException e1) {
+                    e1.printStackTrace();
+                }
+            }
         });
         manageUsers.addActionListener(e->{
-                if (showUsersRadioButton.isSelected())
-                        showAllUsers();
-                else if (addUserRadioButton.isSelected())
-                    try {
-                        addNewUser();
-                    } catch (BadInputException e1) {
-                        e1.printStackTrace();
-                    }
-                else if (deleteUserRadioButton.isSelected())
-                    try {
-                        deleteUser();
-                    } catch (BadInputException e1) {
-                        e1.printStackTrace();
-                    }
-                else if (updateUserRadioButton.isSelected())
-                    try {
-                        updateUsers();
-                    } catch (BadInputException e1) {
-                        e1.printStackTrace();
-                    }
+            if (showUsersRadioButton.isSelected()) {
+                try {
+                    showAllUsers();
+                } catch (BadInputException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            else if (addUserRadioButton.isSelected()) {
+                try {
+                    addNewUser();
+                } catch (BadInputException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            else if (deleteUserRadioButton.isSelected()) {
+                try {
+                    deleteUser();
+                } catch (BadInputException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            else if (updateUserRadioButton.isSelected()) {
+                try {
+                    updateUsers();
+                } catch (BadInputException e1) {
+                    e1.printStackTrace();
+                }
+            }
         });
         manageTrans.addActionListener(e -> {
-            if (showTransRadioButton.isSelected())
-                showAllTrans();
-            else if (addTransRadioButton.isSelected())
+            if (showTransRadioButton.isSelected()) {
+                try {
+                    showAllTrans();
+                } catch (BadInputException e1) {
+                    e1.printStackTrace();
+                }
+            } else if (addTransRadioButton.isSelected()) {
                 try {
                     addTrans();
                 } catch (BadInputException e1) {
                     e1.printStackTrace();
                 }
+            }
         });
     }
     
     public void itemStateChanged(ItemEvent evt) {
         CardLayout cl = (CardLayout)(cards.getLayout());
-        cl.show(cards, (String)evt.getItem());
+        cl.show(cards, (String) evt.getItem());
     }
     
+    private String getSelection(JPanel panel) throws BadInputException{
+        for (Component comp : panel.getComponents()){
+            if(comp instanceof JRadioButton){
+                if (((JRadioButton) comp).isSelected()){
+                    try {
+                        return ((JRadioButton) comp).getText();
+                    } catch (Exception e) {
+                        throw new BadInputException("Unable to determine Vehicle Type");
+                    }
+                }
+            }
+        }
+        return "Invalid Type.";
+    }
+
+    private int getType(String type){
+        if(type.equals("Passenger Car"))
+            return 1;
+        if(type.equals("Truck"))
+            return 2;
+        if(type.equals("Motorcycle"))
+            return 3;
+        if(type.equals("Customer"))
+            return 1;
+        if(type.equals("Employee"))
+            return 2;
+        else
+            return -1;
+    }
+
     private void showAllVehicles() {
         JPanel topPanel = new JPanel();
         topPanel.setSize(400, 300);
@@ -229,22 +276,22 @@ public class GUI extends JFrame implements ItemListener {
         // Create some data
         ArrayList<String[]> data = database.showAllVehicles();
 
-        String dataValues[][]={};
-        for(int i = 0; i < data.size(); i++){
-            dataValues[i] = data.get(i);
+        if(data.size() > 0){
+            String dataValues[][]={};
+            for(int i = 0; i < data.size(); i++){
+                dataValues[i] = data.get(i);
+            }
+            // Create a new table instance
+            JTable table = new JTable(dataValues, columnNames);
+            table.setFillsViewportHeight(true);
+
+            // Add the table to a scrolling pane
+            JScrollPane scrollPane = new JScrollPane(table);
+            topPanel.add(scrollPane, BorderLayout.CENTER);
         }
-
-        // Create a new table instance
-        JTable table = new JTable(dataValues, columnNames);
-        table.setFillsViewportHeight(true);
-
-        // Add the table to a scrolling pane
-        JScrollPane scrollPane = new JScrollPane(table);
-        topPanel.add(scrollPane, BorderLayout.CENTER);
         JOptionPane.showMessageDialog(this, topPanel, "Search results", JOptionPane.PLAIN_MESSAGE);
     }
-    
-    
+
     private void addNewVehicle() throws BadInputException {
         JPanel panel = new JPanel();
         panel.setSize(500, 400);
@@ -311,16 +358,11 @@ public class GUI extends JFrame implements ItemListener {
             ArrayList<String> texts = new ArrayList<>();
             int vehicleType = -1;
             for (Component comp : panel.getComponents()) {
-                if (comp instanceof JRadioButton) {
-                    if (((JRadioButton) comp).isSelected()) {
-                        try {
-                            vehicleType = Integer.parseInt(((JRadioButton) comp).getText());
-                        } catch (Exception e) {
-                            throw new BadInputException("Unable to determine Vehicle Type");
-                        }
-                    }
+                if(comp instanceof JPanel) {
+                    String type = getSelection(((JPanel) comp));
+                    vehicleType = getType(type);
+                    break;
                 }
-
                 if (comp instanceof JTextField)
                     texts.add(((JTextField) comp).getText());
             }
@@ -342,7 +384,14 @@ public class GUI extends JFrame implements ItemListener {
 
         // Print Options
         String Options[] = {"Delete Vehicle", "Cancel"};
-        JOptionPane.showOptionDialog(this, panel, "Delete vehicle", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
+        int opt= JOptionPane.showOptionDialog(this, panel, "Delete vehicle", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
+
+        if(opt == 0){
+            Component comps[] = panel.getComponents();
+            if(database.deleteVehicle(((JTextField)comps[1]).getText())){
+                JOptionPane.showMessageDialog(this, "Vehicle Successfully Deleted.");
+            }
+        }
     }
 
     
@@ -358,7 +407,40 @@ public class GUI extends JFrame implements ItemListener {
 
         // Print Options
         String Options[] = {"Show Vehicle", "Cancel"};
-        JOptionPane.showOptionDialog(this, panel, "Search vehicle by VIN", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
+        int opt = JOptionPane.showOptionDialog(this, panel, "Search vehicle by VIN", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
+
+        if (opt == 0){
+            JPanel results = new JPanel();
+            results.setSize(400, 300);
+            results.setLayout(new BorderLayout());
+            getContentPane().add(results);
+            
+            //get all necessary components
+            Component comps[] = panel.getComponents();
+
+            // Create columns names
+            String columnNames[] = {"VIN", "MAKE", "MODEL", "YEAR", "MILEAGE", "PRICE"};
+
+            ArrayList<String[]> data = database.searchVehicle(((JTextField)comps[1]).getText());
+
+            if(data.size() > 0){
+                String dataValues[][]={};
+
+                for(int i = 0; i < data.size(); i++){
+                   dataValues[i] = data.get(i);
+                }
+
+                // Create a new table instance
+                JTable table = new JTable(dataValues, columnNames);
+                table.setFillsViewportHeight(true);
+
+                //create scroll pane to hold search contents
+                JScrollPane scrollPane = new JScrollPane(table);
+                results.add(scrollPane, BorderLayout.CENTER);
+            }
+
+            JOptionPane.showMessageDialog(this, results, "Search results", JOptionPane.PLAIN_MESSAGE);
+        }
     }
     
     private void searchVehicleByPrice() throws BadInputException {
@@ -393,14 +475,55 @@ public class GUI extends JFrame implements ItemListener {
 
         // Print Options
         String Options[] = {"Show Vehicles", "Cancel"};
-        JOptionPane.showOptionDialog(this, panel, "Search vehicles by price", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
+        int opt = JOptionPane.showOptionDialog(this, panel, "Search vehicles by price", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
+
+        if (opt == 0){
+            JPanel results = new JPanel();
+            results.setSize(400, 300);
+            results.setLayout(new BorderLayout());
+            getContentPane().add(results);
+
+            //get all necessary components
+            Component comps[] = panel.getComponents();
+            int vehicleType = -1;
+
+            for (Component comp : comps) {
+                if(comp instanceof JPanel) {
+                    String type = getSelection(((JPanel) comp));
+                    vehicleType = getType(type);
+                    break;
+                }
+            }
+
+            // Create columns names
+            String columnNames[] = {"VIN", "MAKE", "MODEL", "YEAR", "MILEAGE", "PRICE"};
+
+            ArrayList<String[]> data = database.showVehiclesByPrice(((JTextField)comps[1]).getText(), ((JTextField)comps[3]).getText(), vehicleType);
+
+            if(data.size() > 0){
+                String dataValues[][]={};
+                
+                for(int i = 0; i < data.size(); i++){
+                   dataValues[i] = data.get(i);
+                }
+
+                // Create a new table instance
+                JTable table = new JTable(dataValues, columnNames);
+                table.setFillsViewportHeight(true);
+
+                // Add the table to a scrolling pane
+                JScrollPane scrollPane = new JScrollPane(table);
+                results.add(scrollPane, BorderLayout.CENTER);
+            }
+            JOptionPane.showMessageDialog(this, results, "Search results", JOptionPane.PLAIN_MESSAGE);
+        }
     }
 
     
     /**
      *
      */
-    private void showAllUsers() {
+    private void showAllUsers() throws BadInputException {
         JPanel topPanel = new JPanel();
         topPanel.setSize(400, 300);
         topPanel.setLayout(new BorderLayout());
@@ -409,13 +532,10 @@ public class GUI extends JFrame implements ItemListener {
         // Create columns names
         String columnNames[] = {"ID", "FIRST NAME", "LAST NAME"};
 
-        // Create some data
-        ArrayList<String[]> data = database.showAllUsers();
-
-        String dataValues[][]={};
-        for(int i = 0; i < data.size(); i++){
-            dataValues[i] = data.get(i);
-        }
+        String dataValues[][] = {
+                {"777586", "Luke", "Skywalker"},
+                {"134882", "Darth", "Vader"},
+        };
 
         // Create a new table instance
         JTable table = new JTable(dataValues, columnNames);
@@ -425,8 +545,17 @@ public class GUI extends JFrame implements ItemListener {
         JScrollPane scrollPane = new JScrollPane(table);
         topPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Print Results
-        JOptionPane.showMessageDialog(this, topPanel, "Search results", JOptionPane.PLAIN_MESSAGE);
+        // Print Options
+        String Options[] = {"Show Users", "Cancel"};
+        int opt = JOptionPane.showOptionDialog(this, topPanel, "Search results", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
+
+        /*if (opt == 0){
+            for (User u : users) {
+                u.print();
+            }
+        } else {
+
+        }*/
     }
 
     /**
@@ -438,21 +567,6 @@ public class GUI extends JFrame implements ItemListener {
         getContentPane().add(panel);
         panel.setLayout(new FormLayout());
 
-        // Add Customer/Employee button selection
-        panel.add(new JLabel("User type:"));
-        JRadioButton customer = new JRadioButton("Customer");
-        customer.setSelected(true);
-        JRadioButton employee = new JRadioButton("Employee");
-        ButtonGroup group = new ButtonGroup();
-        group.add(customer);
-        group.add(employee);
-
-        // Add organized button panel
-        JPanel radiosPanel = new JPanel(new FlowLayout());
-        radiosPanel.add(customer);
-        radiosPanel.add(employee);
-        panel.add(radiosPanel);
-
         // Add User Text Fields
         panel.add(new JLabel("ID"));
         panel.add(new JTextField(6));
@@ -460,47 +574,36 @@ public class GUI extends JFrame implements ItemListener {
         panel.add(new JTextField(20));
         panel.add(new JLabel("Last Name"));
         panel.add(new JTextField(20));
+        panel.add(new JLabel("User type:"));
 
-        JLabel ex3 = new JLabel("Phone");
-        panel.add(ex3);
-        panel.add(new JTextField(20));
-        JLabel ex4 = new JLabel("Drivers License");
-        panel.add(ex4);
-        panel.add(new JTextField(20));
+        // Add Customer/Employee button selection
+        JRadioButton user = new JRadioButton("Customer");
+        user.setSelected(true);
+        JRadioButton emp = new JRadioButton("Employee");
+        ButtonGroup group = new ButtonGroup();
+        group.add(user);
+        group.add(emp);
 
-        customer.addActionListener(e -> {
-            ex3.setText("Phone");
-            ex4.setText("Drivers License");
-        });
-        employee.addActionListener(e -> {
-            ex3.setText("Monthly Salary");
-            ex4.setText("Bank Account");
-        });
+        // Add organized button panel
+        JPanel radiosPanel = new JPanel(new FlowLayout());
+        radiosPanel.add(user);
+        radiosPanel.add(emp);
+        panel.add(radiosPanel);
 
         // Print Options
         String Options[] = {"Add User", "Cancel"};
         int opt = JOptionPane.showOptionDialog(this, panel, "Add new vehicle", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
 
-        if (opt == 0) {
+        /*if (opt == 0) {
             ArrayList<String> text = new ArrayList<>();
-            int userType = -1;
-            for (Component comp : panel.getComponents()) {
-                if (comp instanceof JRadioButton) {
-                    if (((JRadioButton) comp).isSelected()) {
-                        try {
-                            userType = Integer.parseInt(((JRadioButton) comp).getText());
-                        } catch (Exception e) {
-                            throw new BadInputException("Unable to determine User Type");
-                        }
-                    }
-                }
+            for (Component comp : this.getComponents()){
 
-                if (comp instanceof JTextArea)
-                    text.add(((JTextField) comp).getText());
             }
-            database.addNewUser(userType, text.get(0), text.get(1), text.get(2), text.get(3), text.get(4), text.get(5), text.get(6));
+
             JOptionPane.showMessageDialog(null, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
-        }
+        } else {
+
+        }*/
     }
 
     /**
@@ -543,7 +646,7 @@ public class GUI extends JFrame implements ItemListener {
     /**
      *
      */
-    private void showAllTrans() {
+    private void showAllTrans() throws BadInputException {
         JPanel topPanel = new JPanel();
         topPanel.setSize(400, 300);
         topPanel.setLayout(new BorderLayout());
@@ -552,12 +655,10 @@ public class GUI extends JFrame implements ItemListener {
         // Create columns names
         String columnNames[] = {"VIN","CUSTOMER ID", "EMPLOYEE ID", "DATE", "PRICE"};
 
-        ArrayList<String[]> data = database.showAllSales();
-
-        String dataValues[][]={};
-        for(int i = 0; i < data.size(); i++){
-            dataValues[i] = data.get(i);
-        }
+        String dataValues[][] = {
+                {"SDF34", "777586", "000022", "11/20/2015", "15000"},
+                {"DF6S1", "134882", "000022","12/24/2014", "12000"},
+        };
 
         // Create a new table instance
         JTable table = new JTable(dataValues, columnNames);
@@ -595,26 +696,6 @@ public class GUI extends JFrame implements ItemListener {
 
         // Print Options
         String Options[] = {"Add Transaction", "Cancel"};
-        int opt = JOptionPane.showOptionDialog(this, panel, "Add new transaction", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
-
-        if (opt == 0) {
-            ArrayList<String> text = new ArrayList<>();
-            for (Component comp : panel.getComponents()) {
-                if (comp instanceof JRadioButton) {
-                    if (((JRadioButton) comp).isSelected()) {
-                        try {
-                            //userType = Integer.parseInt(((JRadioButton) comp).getText());
-                        } catch (Exception e) {
-                            throw new BadInputException("Unable to determine Sale transaction");
-                        }
-                    }
-                }
-
-                if (comp instanceof JTextArea)
-                    text.add(((JTextField) comp).getText());
-            }
-            database.sellVehicle(text.get(0), text.get(1), text.get(2), text.get(3));
-            JOptionPane.showMessageDialog(null, "Successful Transaction!", "Success", JOptionPane.PLAIN_MESSAGE);
-        }
+        JOptionPane.showOptionDialog(this, panel, "Add new transaction", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
     }
 }

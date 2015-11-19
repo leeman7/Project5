@@ -42,7 +42,7 @@ import java.util.Scanner;
  * 9. Sell a vehicle.
  * 10. Show a list of completed sale transactions        
  * 11. Exit program.
- * @author vangelis
+ * @author vangelis 
  */
 public class Database {
     
@@ -132,45 +132,45 @@ public class Database {
             }catch(Exception e){
                 throw new BadInputException("Invalid displacement value.");
             }
+        } else {
+            throw new BadInputException("Invalid Vehicle Type");
         }
     }
 
-    
-    public void searchVehicle() {
-
-        System.out.print("\nEnter VIN of vehicle to search for (string): ");
-        String vin =
-        
-        List<Vehicle> matchingVehicle = new ArrayList<Vehicle>();
+    /**
+     *
+     * @param vin
+     * @return
+     */
+    public ArrayList<String[]> searchVehicle(String vin) {
+        List<Vehicle> matchingVehicle = new ArrayList<>();
         for (Vehicle v : vehicleInventory) {
             if (v.getVin().equals(vin)) {
                 matchingVehicle.add(v);
-                showVehicles(matchingVehicle);
-                return;
+                return showVehicles(matchingVehicle);
             }
         }
-        System.out.println("Vehicle with VIN " + vin + " not found in the database"); 
+        return new ArrayList<>();
     }
     
     
     /**
      * This method allows the user to delete a vehicle from the inventory database.
-     * @param sc The scanner object used to read user input.
+     * @param vin The String object containing the car vin.
      */
-    public void deleteVehicle() {
-        System.out.print("\nEnter VIN of vehicle to delete (string): ");
-        String vin = ;
-        
+    public boolean deleteVehicle(String vin) {
         for (Vehicle v : vehicleInventory) {
             if (v.getVin().equals(vin)) {
                 vehicleInventory.remove(v);
-                break;
+                return true;
             }
         }
+        return false;
     }
     
     /**
      * Auxilary private method to print out a list of vehicles in a formatted manner.
+     * @param vehicles List object containing the list of cars in the database
      */
     private ArrayList<String[]> showVehicles(List<Vehicle> vehicles) {
         ArrayList<String[]> vehicleList = new ArrayList<>();
@@ -201,75 +201,99 @@ public class Database {
     /**
      * This method allows the user to search for vehicles within a price range.
      * The list of vehicles found is printed out.
-     * @param sc The scanner object used to read user input.
+     * @param Low minimum price range
+     * @param High maximum price range
+     * @param vehicleType vehicle type
      */
-    public void showVehiclesByPrice() throws BadInputException {
+    public ArrayList<String[]> showVehiclesByPrice(String Low, String High, int vehicleType) throws BadInputException {
+        float high, low;
 
-        float lowValue =
-        if (lowValue < 0.0f)
-            throw new BadInputException("Low price cannot be negative.");
-        
+        try {
+            low = Float.parseFloat(Low);
+            if (low < 0.0f)
+                throw new BadInputException("Low price cannot be negative.");
 
-        float highValue =
-        if (highValue < 0.0f)
-            throw new BadInputException("High price cannot be negative.");
-
-        int vehicleType = ;
+            high = Float.parseFloat(High);
+            if (high < 0.0f)
+                throw new BadInputException("High price cannot be negative.");
+        }catch (Exception e){
+            throw new BadInputException("Invalid Low or High price range.");
+        }
         if (vehicleType < 1 || vehicleType > 3)
             throw new BadInputException("Legal vehicle type values: 1-3.");
         
         ArrayList<Vehicle> matchingVehicles = new ArrayList<Vehicle>();
         for (Vehicle v : vehicleInventory) {
-            if (v.getPrice() >= lowValue && v.getPrice() <= highValue) {
+            if (v.getPrice() >= low && v.getPrice() <= high) {
                 if (vehicleType == 1 && v instanceof PassengerCar)
                     matchingVehicles.add(v);
                 else if (vehicleType == 2 && v instanceof Truck)
                     matchingVehicles.add(v);
                 else if (vehicleType == 3 && v instanceof Motorcycle)
                     matchingVehicles.add(v);
+                else
+                    throw new BadInputException("Invalid Vehicle Type");
             }
         }
         
-        if (matchingVehicles.size() == 0)
-            ;
+        if (matchingVehicles.size() != 0)
+            return showVehicles(matchingVehicles);
         else
-            showVehicles(matchingVehicles);
+            return new ArrayList<>();
     }
 
     /**
      * This method allows a new user to be added to the database.
-     * @param sc The scanner object used to read user input.
+     * @param
      * @throws Database BadInputException
      */
-    public void addNewUser(int userType, String id, String fname, String lname, String ph, String dl, String ex3, String ex4) throws BadInputException {
-
+    public void addNewUser() throws BadInputException {
+        System.out.println("Select user type:\n"
+                + "1. Customer\n"
+                + "2. Employee");
+        int userType = sc.nextInt();
         if (userType < 1 || userType > 3)
             throw new BadInputException("Legal user type values: 1-2.");
-
+        
+        sc.nextLine();
+        System.out.print("\nEnter first name (string): ");
+        String firstName = sc.nextLine();
+        
+        System.out.print("\nEnter last name (string): ");
+        String lastName = sc.nextLine();
+        
         if (userType == 1) {
-            String phoneNumber = ph;
-            int dlnumber = Integer.parseInt(dl);
+            System.out.print("\nEnter phone number (string): ");
+            String phoneNumber = sc.nextLine();
+            
+            System.out.print("\nEnter driver license number (int): ");
+            int dlnumber = sc.nextInt();
             if (dlnumber < 0)
                 throw new BadInputException("Driver license number cannot be negative.");
 
-            users.add(new Customer(userIdCounter++, fname, lname,
+            users.add(new Customer(userIdCounter++, firstName, lastName, 
                     phoneNumber, dlnumber));
         } else if (userType == 2) {
-            float monthlySalary = Float.parseFloat(ex3);
+            System.out.print("\nEnter monthly salary (float): ");
+            float monthlySalary = sc.nextFloat();
             if (monthlySalary < 0.0f)
                 throw new BadInputException("Monthly salary cannot be negative.");
-            int bankAccNumber = Integer.parseInt(ex4);
+            
+            System.out.print("\nEnter bank account number (int): ");
+            int bankAccNumber = sc.nextInt();
             if (bankAccNumber < 0)
                 throw new BadInputException("Driver license number cannot be negative.");
-
-            users.add(new Employee(userIdCounter++, fname, lname,
+            
+            users.add(new Employee(userIdCounter++, firstName, lastName, 
                     monthlySalary, bankAccNumber));
+        } else {
+            System.out.println("Unknown user type. Please try again.");
         }
     }
 
     /**
      * This method can be used to update a user's information, given their user ID.
-     * @param sc The scanner object used to read user input.
+     * @param
      * @throws Database BadInputException
      */
     public void updateUser(String id, String fname, String lname, String ph, String dl, String ex3, String ex4) throws BadInputException {
@@ -349,6 +373,7 @@ public class Database {
 
     /**
      * This method is used to complete a vehicle sale transaction.
+     * @param
      * @throws Database BadInputException
      */
     public void sellVehicle(String cid, String eid, String Vin, String Price) throws BadInputException {
@@ -475,7 +500,7 @@ public class Database {
     /**
      * This method is used to save the Database database as a 
      * serializable object.
-     * @param cds
+     * @param
      */
     public void writeDatabase() {
         //serialize the database
