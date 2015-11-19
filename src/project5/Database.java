@@ -42,7 +42,8 @@ import java.util.Scanner;
  * 9. Sell a vehicle.
  * 10. Show a list of completed sale transactions        
  * 11. Exit program.
- * @author vangelis 
+ * @author Clayton Billups & Lee Nardo
+ * @date Thu Nov 18 11:37:45 CST 2015
  */
 public class Database {
     
@@ -61,8 +62,12 @@ public class Database {
         this.transactions = new ArrayList<SaleTransaction>();
     }
 
-        /**
+    /**
      * Constructor. Initializes the inventory, users, and transactions to given values.
+     * @param vehicleInventory
+     * @param users
+     * @param transactions
+     *
      */
     public Database(List<Vehicle> vehicleInventory, List<User> users, List<SaleTransaction> transactions) {
         this.vehicleInventory = vehicleInventory;
@@ -73,7 +78,15 @@ public class Database {
     /**
      * This method allows the user to enter a new vehicle to the inventory 
      * database.
-     *param sc The scanner object used to read user input.
+     * @param vehicleType
+     * @param vin
+     * @param make
+     * @param model
+     * @param Year
+     * @param Mileage
+     * @param Price
+     * @param ex1
+     * @param ex2
      * @throws Database BadInputException
      */
     public void addNewVehicle(int vehicleType, String vin, String make, String model, String Year, String Mileage, String Price, String ex1, String ex2) throws BadInputException {
@@ -138,9 +151,11 @@ public class Database {
     }
 
     /**
-     *
+     * This function searches the vehicle list using a vin passed to the function.
+     * If the vin is found it should return a vehicle that matches the vin number entered.
+     * If the vin is not found then it should return an error message via the gui to the user.
      * @param vin
-     * @return
+     * @return showVehicles(matchingVehicle)
      */
     public ArrayList<String[]> searchVehicle(String vin) {
         List<Vehicle> matchingVehicle = new ArrayList<>();
@@ -244,7 +259,13 @@ public class Database {
 
     /**
      * This method allows a new user to be added to the database.
-     * @param
+     * @param userType
+     * @param id
+     * @param fname
+     * @param lname
+     * @param ph
+     * @param ex3
+     * @param ex4
      * @throws Database BadInputException
      */
     public void addNewUser(int userType, String id, String fname, String lname, String ph, String dl, String ex3, String ex4) throws BadInputException {
@@ -275,7 +296,13 @@ public class Database {
 
     /**
      * This method can be used to update a user's information, given their user ID.
-     * @param
+     * @param id
+     * @param fname
+     * @param lname
+     * @param ph
+     * @param dl
+     * @param ex3
+     * @param ex4
      * @throws Database BadInputException
      */
     public void updateUser(String id, String fname, String lname, String ph, String dl, String ex3, String ex4) throws BadInputException {
@@ -335,6 +362,8 @@ public class Database {
 
     /**
      * Prints out a list of all users in the database.
+     * @param users
+     * @return userList
      */
     private ArrayList<String[]>  showUsers(List<User> users) {
         ArrayList<String[]> userList = new ArrayList<>();
@@ -355,8 +384,12 @@ public class Database {
 
     /**
      * This method is used to complete a vehicle sale transaction.
-     * @param
+     * @param cid
+     * @param eid
+     * @param Vin
+     * @param Price
      * @throws Database BadInputException
+     * @return null
      */
     public void sellVehicle(String cid, String eid, String Vin, String Price) throws BadInputException {
         int customerId = Integer.parseInt(cid);
@@ -404,6 +437,7 @@ public class Database {
     
     /**
      * Prints out a list of all recorded transactions.
+     * @param transactions
      */
     private ArrayList<String[]> showSales(List<SaleTransaction> transactions) {
         ArrayList<String[]> salesList = new ArrayList<>();
@@ -422,6 +456,11 @@ public class Database {
         return salesList;
     }
 
+    /**
+     * This function returns the ArrayList of the private function showSales which generates our list
+     * of vehicle transactions.
+     * @return null
+     */
     public ArrayList<String[]> showAllSales() { return showSales(transactions); }
     
     /**
@@ -482,7 +521,6 @@ public class Database {
     /**
      * This method is used to save the Database database as a 
      * serializable object.
-     * @param
      */
     public void writeDatabase() {
         //serialize the database
