@@ -247,47 +247,29 @@ public class Database {
      * @param
      * @throws Database BadInputException
      */
-    public void addNewUser() throws BadInputException {
-        System.out.println("Select user type:\n"
-                + "1. Customer\n"
-                + "2. Employee");
-        int userType = sc.nextInt();
+    public void addNewUser(int userType, String id, String fname, String lname, String ph, String dl, String ex3, String ex4) throws BadInputException {
+
         if (userType < 1 || userType > 3)
             throw new BadInputException("Legal user type values: 1-2.");
-        
-        sc.nextLine();
-        System.out.print("\nEnter first name (string): ");
-        String firstName = sc.nextLine();
-        
-        System.out.print("\nEnter last name (string): ");
-        String lastName = sc.nextLine();
-        
+
         if (userType == 1) {
-            System.out.print("\nEnter phone number (string): ");
-            String phoneNumber = sc.nextLine();
-            
-            System.out.print("\nEnter driver license number (int): ");
-            int dlnumber = sc.nextInt();
+            String phoneNumber = ph;
+            int dlnumber = Integer.parseInt(dl);
             if (dlnumber < 0)
                 throw new BadInputException("Driver license number cannot be negative.");
 
-            users.add(new Customer(userIdCounter++, firstName, lastName, 
+            users.add(new Customer(userIdCounter++, fname, lname,
                     phoneNumber, dlnumber));
         } else if (userType == 2) {
-            System.out.print("\nEnter monthly salary (float): ");
-            float monthlySalary = sc.nextFloat();
+            float monthlySalary = Float.parseFloat(ex3);
             if (monthlySalary < 0.0f)
                 throw new BadInputException("Monthly salary cannot be negative.");
-            
-            System.out.print("\nEnter bank account number (int): ");
-            int bankAccNumber = sc.nextInt();
+            int bankAccNumber = Integer.parseInt(ex4);
             if (bankAccNumber < 0)
                 throw new BadInputException("Driver license number cannot be negative.");
-            
-            users.add(new Employee(userIdCounter++, firstName, lastName, 
+
+            users.add(new Employee(userIdCounter++, fname, lname,
                     monthlySalary, bankAccNumber));
-        } else {
-            System.out.println("Unknown user type. Please try again.");
         }
     }
 
@@ -322,9 +304,6 @@ public class Database {
         if (user == null) {
             throw new BadInputException("NO User Found.");
         }
-
-        String firstName = fname;
-        String lastName = lname;
         
         if (user instanceof Customer) {
             String phoneNumber = ph;
