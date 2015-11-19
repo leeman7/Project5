@@ -11,6 +11,7 @@ package project5;
  */
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import javax.swing.*;
 
 /**
@@ -19,6 +20,8 @@ import javax.swing.*;
 public class GUI extends JFrame implements ItemListener {
     // Setup Menu Items
     private JPanel cards; //a panel that uses CardLayout
+    //private Database database;
+
     private final static String vehicleMngmt = "Vehicle Managment";
     private final static String userMngmt = "User Management";
     private final static String transMngmt = "Transaction Management";
@@ -286,19 +289,6 @@ public class GUI extends JFrame implements ItemListener {
         getContentPane().add(panel);
         panel.setLayout(new FormLayout());
 
-        // Add Vehicle Text fields
-        panel.add(new JLabel("VIN"));
-        panel.add(new JTextField(5));
-        panel.add(new JLabel("Make"));
-        panel.add(new JTextField(20));
-        panel.add(new JLabel("Model"));
-        panel.add(new JTextField(20));
-        panel.add(new JLabel("Year"));
-        panel.add(new JTextField(4));
-        panel.add(new JLabel("Mileage"));
-        panel.add(new JTextField(6));
-        panel.add(new JLabel("Price"));
-        panel.add(new JTextField(6));
         panel.add(new JLabel("Vehicle type:"));
 
         // Add Car/Truck/Motorcycle Button Selection
@@ -319,6 +309,18 @@ public class GUI extends JFrame implements ItemListener {
         panel.add(radiosPanel);
 
         // Add Vehicle Text fields
+        panel.add(new JLabel("VIN"));
+        panel.add(new JTextField(5));
+        panel.add(new JLabel("Make"));
+        panel.add(new JTextField(20));
+        panel.add(new JLabel("Model"));
+        panel.add(new JTextField(20));
+        panel.add(new JLabel("Year"));
+        panel.add(new JTextField(4));
+        panel.add(new JLabel("Mileage"));
+        panel.add(new JTextField(6));
+        panel.add(new JLabel("Price"));
+        panel.add(new JTextField(6));
         panel.add(new JLabel("Extra info 1"));
         panel.add(new JTextField(20));
         panel.add(new JLabel("Extra info 2"));
@@ -327,6 +329,9 @@ public class GUI extends JFrame implements ItemListener {
         // Print Options
         String Options[] = {"Add Vehicle", "Cancel"};
         JOptionPane.showOptionDialog(this, panel, "Add new vehicle", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
+
+        //Message for successful adding vehicle
+        //JOptionPane.showMessageDialog(null, "Successfully Added new user!", "Success", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -430,7 +435,15 @@ public class GUI extends JFrame implements ItemListener {
 
         // Print Options
         String Options[] = {"Show Users", "Cancel"};
-        JOptionPane.showOptionDialog(this, topPanel, "Search results", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
+        int opt = JOptionPane.showOptionDialog(this, topPanel, "Search results", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
+
+        /*if (opt == 0){
+            for (User u : users) {
+                u.print();
+            }
+        } else {
+
+        }*/
     }
 
     /**
@@ -467,7 +480,18 @@ public class GUI extends JFrame implements ItemListener {
 
         // Print Options
         String Options[] = {"Add User", "Cancel"};
-        JOptionPane.showOptionDialog(this, panel, "Add new vehicle", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
+        int opt = JOptionPane.showOptionDialog(this, panel, "Add new vehicle", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
+
+        /*if (opt == 0) {
+            ArrayList<String> text = new ArrayList<>();
+            for (Component comp : this.getComponents()){
+
+            }
+
+            JOptionPane.showMessageDialog(null, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
+        } else {
+
+        }*/
     }
 
     /**
@@ -486,6 +510,7 @@ public class GUI extends JFrame implements ItemListener {
         // Print Options
         String Option[] = {"Delete User", "Cancel"};
         JOptionPane.showOptionDialog(this, panel, "Delete user", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Option, Option[0]);
+        //JOptionPane.showMessageDialog(null, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
     }
 
     /**
