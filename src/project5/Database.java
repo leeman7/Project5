@@ -305,12 +305,12 @@ public class Database {
      * @param ex4
      * @throws Database BadInputException
      */
-    public void updateUser(String id, String fname, String lname, String ph, String dl, String ex3, String ex4) throws BadInputException {
+    public void updateUsers(int id, String fname, String lname, String ph, String dl, String ex3, String ex4) throws BadInputException {
         int userID=-1, dlNumber=-1, bankAccNumber=-1;
         float monthlySalary;
 
         try {
-            userID = Integer.parseInt(id);
+        userID = id;
             dlNumber = Integer.parseInt(dl);
             bankAccNumber = Integer.parseInt(ex4);
         }catch(Exception e){

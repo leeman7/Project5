@@ -657,9 +657,51 @@ public class GUI extends JFrame implements ItemListener {
         panel.add(new JLabel("Enter ID"));
         panel.add(new JTextField(5));
 
+        panel.add(new JLabel("First Name"));
+        panel.add(new JTextField(20));
+        panel.add(new JLabel("Last Name"));
+        panel.add(new JTextField(20));
+
+        JLabel ex3 = new JLabel("Phone");
+        panel.add(ex3);
+        panel.add(new JTextField(20));
+        JLabel ex4 = new JLabel("Drivers License");
+        panel.add(ex4);
+        panel.add(new JTextField(20));
+
+        /*customer.addActionListener(e -> {
+            ex3.setText("Phone");
+            ex4.setText("Drivers License");
+        });
+        employee.addActionListener(e -> {
+            ex3.setText("Monthly Salary");
+            ex4.setText("Bank Account");
+        });*/
+
         // Print Options
         String Options[] = {"Update User", "Cancel"};
-        JOptionPane.showOptionDialog(this, panel, "Search Users to update", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
+        int opt = JOptionPane.showOptionDialog(this, panel, "Search Users to update", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
+
+        if (opt == 1) {
+            ArrayList<String> text = new ArrayList<>();
+            int userID = -1;
+            for (Component comp : panel.getComponents()) {
+                if (comp instanceof JRadioButton) {
+                    if (((JRadioButton) comp).isSelected()) {
+                        try {
+                            userID = Integer.parseInt(((JRadioButton) comp).getText());
+                        } catch (Exception e) {
+                            throw new BadInputException("Unable to determine User Type");
+                        }
+                    }
+                }
+
+                if (comp instanceof JTextArea)
+                    text.add(((JTextField) comp).getText());
+            }
+            database.updateUsers(userID, text.get(0), text.get(1), text.get(2), text.get(3), text.get(4), text.get(5));
+            JOptionPane.showMessageDialog(null, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
+        }
     }
 
     /**
