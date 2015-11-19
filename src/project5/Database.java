@@ -343,8 +343,8 @@ public class Database {
      * This method is used to complete a vehicle sale transaction.
      * @throws Database BadInputException
      */
-    public void sellVehicle() throws BadInputException {
-        int customerId = ;
+    public void sellVehicle(String cid, String eid, String Vin, String Price) throws BadInputException {
+        int customerId = Integer.parseInt(cid);
         //Check that the customer exists in database
         boolean customerExists = false;
         for (User u : users) {
@@ -355,7 +355,7 @@ public class Database {
             return;
         }
 
-        int employeeId = ;
+        int employeeId = Integer.parseInt(eid);
         //Check that the employee exists in database
         boolean employeeExists = false;
         for (User u : users) {
@@ -366,7 +366,7 @@ public class Database {
             return;
         }
 
-        String vin = ;
+        String vin = Vin;
         //Check that the vehicle exists in database
         Vehicle v = findVehicle(vin);
         if (v == null) {
@@ -375,7 +375,7 @@ public class Database {
         
         Date currentDate = new Date(System.currentTimeMillis());
 
-        float price = ;
+        float price = Float.parseFloat(Price);
         if (price < 0.0f)
             throw new BadInputException("Sale price cannot be negative.");
         
