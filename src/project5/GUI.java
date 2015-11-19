@@ -193,13 +193,13 @@ public class GUI extends JFrame implements ItemListener {
                     e1.printStackTrace();
                 }
             }
-            else if (deleteUserRadioButton.isSelected()) {
+            /*else if (deleteUserRadioButton.isSelected()) {
                 try {
-                    deleteUser();
+                    //deleteUser();
                 } catch (BadInputException e1) {
                     e1.printStackTrace();
                 }
-            }
+            }*/
             else if (updateUserRadioButton.isSelected()) {
                 try {
                     updateUsers();
@@ -545,7 +545,7 @@ public class GUI extends JFrame implements ItemListener {
     }
 
     /**
-     *
+     * This function
      */
     private void addNewUser() throws BadInputException {
         JPanel panel = new JPanel();
@@ -619,9 +619,13 @@ public class GUI extends JFrame implements ItemListener {
     }
 
     /**
-     *
+     * The following function is the GUI implementation of deleting a user from our Database.
+     * The user is prompted to enter an ID to search a user by, if the user is not found the GUI
+     * will return an error message. If the user is found, it then proceeds to delete the user in the database
+     * and return a success message to the user.
+     * @throws BadInputException
      */
-    private void deleteUser() throws BadInputException {
+    /*private void deleteUser() throws BadInputException {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
         getContentPane().add(panel);
@@ -635,10 +639,13 @@ public class GUI extends JFrame implements ItemListener {
         String Option[] = {"Delete User", "Cancel"};
         JOptionPane.showOptionDialog(this, panel, "Delete user", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Option, Option[0]);
         //JOptionPane.showMessageDialog(null, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
-    }
+    }*/
 
     /**
-     *
+     * The following function is the GUI implementation of updating an existing user within the Database
+     * based on the ID passed to function. The update user function then requests what details to change for
+     * that user in the Database. Once entered the information is updated in the backend.
+     * @throws BadInputException
      */
     private void updateUsers() throws BadInputException {
         JPanel panel = new JPanel();
@@ -656,7 +663,8 @@ public class GUI extends JFrame implements ItemListener {
     }
 
     /**
-     *
+     * This function will show all the existing Transactions within the Database in a formatted table.
+     * All the Transactions are stored in our ArrayList of Sales that should be displayed upon user request.
      */
     private void showAllTrans() {
         JPanel topPanel = new JPanel();
@@ -688,7 +696,8 @@ public class GUI extends JFrame implements ItemListener {
     }
 
     /**
-     *
+     *This function a is the GUI implementation of adding a new transaction to our Database
+     * @throws BadInputException
      */
     private void addTrans() throws BadInputException {
         JPanel panel = new JPanel();
