@@ -221,7 +221,7 @@ public class GUI extends JFrame implements ItemListener {
             }
             /*else if (deleteUserRadioButton.isSelected()) {
                 try {
-                    deleteUser();
+                    //deleteUser();
                 } catch (BadInputException e1) {
                     e1.printStackTrace();
                 }
@@ -572,7 +572,7 @@ public class GUI extends JFrame implements ItemListener {
     }
 
     /**
-     *
+     * This function
      */
     private void addNewUser() throws BadInputException {
         JPanel panel = new JPanel();
@@ -646,9 +646,13 @@ public class GUI extends JFrame implements ItemListener {
     }
 
     /**
-     *
+     * The following function is the GUI implementation of deleting a user from our Database.
+     * The user is prompted to enter an ID to search a user by, if the user is not found the GUI
+     * will return an error message. If the user is found, it then proceeds to delete the user in the database
+     * and return a success message to the user.
+     * @throws BadInputException
      */
-    private void deleteUser() throws BadInputException {
+    /*private void deleteUser() throws BadInputException {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
         getContentPane().add(panel);
@@ -662,10 +666,13 @@ public class GUI extends JFrame implements ItemListener {
         String Option[] = {"Delete User", "Cancel"};
         JOptionPane.showOptionDialog(this, panel, "Delete user", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Option, Option[0]);
         //JOptionPane.showMessageDialog(null, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
-    }
+    }*/
 
     /**
-     *
+     * The following function is the GUI implementation of updating an existing user within the Database
+     * based on the ID passed to function. The update user function then requests what details to change for
+     * that user in the Database. Once entered the information is updated in the backend.
+     * @throws BadInputException
      */
     private void updateUsers() throws BadInputException {
         JPanel panel = new JPanel();
@@ -677,13 +684,56 @@ public class GUI extends JFrame implements ItemListener {
         panel.add(new JLabel("Enter ID"));
         panel.add(new JTextField(5));
 
+        panel.add(new JLabel("First Name"));
+        panel.add(new JTextField(20));
+        panel.add(new JLabel("Last Name"));
+        panel.add(new JTextField(20));
+
+        JLabel ex3 = new JLabel("Phone");
+        panel.add(ex3);
+        panel.add(new JTextField(20));
+        JLabel ex4 = new JLabel("Drivers License");
+        panel.add(ex4);
+        panel.add(new JTextField(20));
+
+        /*customer.addActionListener(e -> {
+            ex3.setText("Phone");
+            ex4.setText("Drivers License");
+        });
+        employee.addActionListener(e -> {
+            ex3.setText("Monthly Salary");
+            ex4.setText("Bank Account");
+        });*/
+
         // Print Options
         String Options[] = {"Update User", "Cancel"};
-        JOptionPane.showOptionDialog(this, panel, "Search Users to update", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
+        int opt = JOptionPane.showOptionDialog(this, panel, "Search Users to update", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
+
+        if (opt == 1) {
+            ArrayList<String> text = new ArrayList<>();
+            int userID = -1;
+            for (Component comp : panel.getComponents()) {
+                if (comp instanceof JRadioButton) {
+                    if (((JRadioButton) comp).isSelected()) {
+                        try {
+                            userID = Integer.parseInt(((JRadioButton) comp).getText());
+                        } catch (Exception e) {
+                            throw new BadInputException("Unable to determine User Type");
+                        }
+                    }
+                }
+
+                if (comp instanceof JTextArea)
+                    text.add(((JTextField) comp).getText());
+            }
+            database.updateUsers(userID, text.get(0), text.get(1), text.get(2), text.get(3), text.get(4), text.get(5));
+            JOptionPane.showMessageDialog(null, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
+        }
     }
 
     /**
-     *
+     * This function will show all the existing Transactions within the Database in a formatted table.
+     * All the Transactions are stored in our ArrayList of Sales that should be displayed upon user request.
      */
     private void showAllTrans() {
         JPanel topPanel = new JPanel();
@@ -715,7 +765,8 @@ public class GUI extends JFrame implements ItemListener {
     }
 
     /**
-     *
+     *This function a is the GUI implementation of adding a new transaction to our Database
+     * @throws BadInputException
      */
     private void addTrans() throws BadInputException {
         JPanel panel = new JPanel();
