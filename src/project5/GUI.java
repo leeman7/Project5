@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class GUI extends JFrame implements ItemListener {
     private JPanel cards; //a panel that uses CardLayout
     private Database database;
     private PrintWriter writer;
+    private StringWriter error;
     private FileHandler handle;
     private Logger log;
 
@@ -59,21 +61,36 @@ public class GUI extends JFrame implements ItemListener {
         initializeEvents();
     }
 
+    /**
+     * Initializes the GUI's Logger, FileHandler, and String Writer
+     * these will all be used to write all user caused exceptions
+     * @return log Logger object
+     * @throws IOException
+     */
     private Logger initializeLogger() throws IOException{
+        //initialize logger
         Logger log = Logger.getAnonymousLogger("myGUILog");
 
+        //create logs.txt file
         writer = new PrintWriter("logs.txt");
         writer.close();
 
+        //intialize fileHandler
         handle= new FileHandler("logs.txt");
         log.addHandler(handle);
-
         SimpleFormatter format = new SimpleFormatter();
         handle.setFormatter(format);
 
         log.addHandler(handle);
 
+         error = new StringWriter();
+
         return log;
+    }
+
+    private String convertExceptionToString(BadInputException ex){
+        ex.printStackTrace(new PrintWriter(error));
+        return error.toString();
     }
     
     private void initializeGui() {
@@ -177,71 +194,82 @@ public class GUI extends JFrame implements ItemListener {
     
     private void initializeEvents(){
         manageVehicles.addActionListener(e->{
-            if (showVehiclesRadioButton.isSelected())
+            if (showVehiclesRadioButton.isSelected()){
                 showAllVehicles();
+                log.info("User requested list of all vehicles");
+            }
             else if (addVehicleRadioButton.isSelected()) {
                 try {
                     addNewVehicle();
-                } catch (BadInputException e1) {
-                    e1.printStackTrace();
+                    log.info("Employee added vehicle:\n   -> " + database.getLastVehicle());
+                } catch (BadInputException ex) {
+                    log.warning(ex.getMessage().toUpperCase() + "\n" + convertExceptionToString(ex));
                 }
             }
             else if (deleteVehicleRadioButton.isSelected()) {
                 try {
                     deleteVehicle();
-                } catch (BadInputException e1) {
-                    e1.printStackTrace();
+                    log.info("Employee removed vehicle from System");
+                } catch (BadInputException ex) {
+                    log.warning(ex.getMessage().toUpperCase() + "\n" + convertExceptionToString(ex));
                 }
             }
             else if (searchByVinRadioButton.isSelected()) {
                 try {
                     searchVehicleByVin();
-                } catch (BadInputException e1) {
-                    e1.printStackTrace();
+                    log.info("User searched for vehicle by VIN");
+                } catch (BadInputException ex) {
+                    log.warning(ex.getMessage().toUpperCase() + "\n" + convertExceptionToString(ex));
                 }
             }
             else if (searchByPriceRadioButton.isSelected()) {
                 try {
                     searchVehicleByPrice();
-                } catch (BadInputException e1) {
-                    e1.printStackTrace();
+                    log.info("User searched for vehicles by price range\n");
+                } catch (BadInputException ex) {
+                    log.warning(ex.getMessage().toUpperCase() + "\n" + convertExceptionToString(ex));
                 }
             }
         });
         manageUsers.addActionListener(e->{
             if (showUsersRadioButton.isSelected()) {
                     showAllUsers();
+                    log.info("User requested list of all users");
             }
             else if (addUserRadioButton.isSelected()) {
                 try {
                     addNewUser();
-                } catch (BadInputException e1) {
-                    e1.printStackTrace();
+                    log.info("Employee added new User to the system.");
+                } catch (BadInputException ex) {
+                    log.warning(ex.getMessage().toUpperCase() + "\n" + convertExceptionToString(ex));
                 }
             }
             /*else if (deleteUserRadioButton.isSelected()) {
                 try {
                     //deleteUser();
-                } catch (BadInputException e1) {
-                    e1.printStackTrace();
+                } catch (BadInputException ex) {
+                    log.warning(ex.getMessage().toUpperCase() + "\n" + convertExceptionToString(ex));
                 }
             }*/
             else if (updateUserRadioButton.isSelected()) {
                 try {
                     updateUsers();
-                } catch (BadInputException e1) {
-                    e1.printStackTrace();
+                    log.info("Employee updated another User's information");
+                } catch (BadInputException ex) {
+                    log.warning(ex.getMessage().toUpperCase() + "\n" + convertExceptionToString(ex));
                 }
             }
         });
         manageTrans.addActionListener(e -> {
             if (showTransRadioButton.isSelected()) {
                     showAllTrans();
+                    log.info("User requested list of all transactions");
             } else if (addTransRadioButton.isSelected()) {
                 try {
                     addTrans();
-                } catch (BadInputException e1) {
-                    e1.printStackTrace();
+                    log.info("Employee Sold Vehicle:");
+                } catch (BadInputException ex) {
+                    log.warning(ex.getMessage().toUpperCase() + "\n" + convertExceptionToString(ex));
                 }
             }
         });

@@ -257,6 +257,11 @@ public class Database {
             return new ArrayList<>();
     }
 
+    public String getLastVehicle(){
+       int last = vehicleInventory.size()-1; 
+       return vehicleInventory.get(last).toString();
+    }
+
     /**
      * This method allows a new user to be added to the database.
      * @param userType
