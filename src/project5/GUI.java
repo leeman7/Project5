@@ -11,12 +11,20 @@ package project5;
  */
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
 import java.util.ArrayList;
+import java.util.logging.SimpleFormatter;
 import javax.swing.*;
 
 public class GUI extends JFrame implements ItemListener {
     private JPanel cards; //a panel that uses CardLayout
     private Database database;
+    private PrintWriter writer;
+    private FileHandler handle;
+    private Logger log;
 
     private final static String vehicleMngmt = "Vehicle Managment";
     private final static String userMngmt = "User Management";
@@ -43,11 +51,29 @@ public class GUI extends JFrame implements ItemListener {
     private JButton manageTrans;
     
 
-    public GUI() throws HeadlessException {
+    public GUI() throws HeadlessException, IOException {
         super("Dealership");
         database = new Database();
+        log = initializeLogger();
         initializeGui();
         initializeEvents();
+    }
+
+    private Logger initializeLogger() throws IOException{
+        Logger log = Logger.getAnonymousLogger("myGUILog");
+
+        writer = new PrintWriter("logs.txt");
+        writer.close();
+
+        handle= new FileHandler("logs.txt");
+        log.addHandler(handle);
+
+        SimpleFormatter format = new SimpleFormatter();
+        handle.setFormatter(format);
+
+        log.addHandler(handle);
+
+        return log;
     }
     
     private void initializeGui() {
@@ -117,7 +143,7 @@ public class GUI extends JFrame implements ItemListener {
         //User Management buttons
         userMngmtPanel.add(showUsersRadioButton);
         userMngmtPanel.add(addUserRadioButton);
-        userMngmtPanel.add(deleteUserRadioButton);
+        //userMngmtPanel.add(deleteUserRadioButton);
         userMngmtPanel.add(updateUserRadioButton);
         
         manageUsers = new JButton("Go");
@@ -193,13 +219,13 @@ public class GUI extends JFrame implements ItemListener {
                     e1.printStackTrace();
                 }
             }
-            else if (deleteUserRadioButton.isSelected()) {
+            /*else if (deleteUserRadioButton.isSelected()) {
                 try {
                     deleteUser();
                 } catch (BadInputException e1) {
                     e1.printStackTrace();
                 }
-            }
+            }*/
             else if (updateUserRadioButton.isSelected()) {
                 try {
                     updateUsers();
@@ -269,7 +295,8 @@ public class GUI extends JFrame implements ItemListener {
         ArrayList<String[]> data = database.showAllVehicles();
 
         if(data.size() > 0){
-            String dataValues[][]={};
+            String dataValues[][]= new String[data.size()][];
+
             for(int i = 0; i < data.size(); i++){
                 dataValues[i] = data.get(i);
             }
@@ -349,13 +376,13 @@ public class GUI extends JFrame implements ItemListener {
             //get all necessary components
             ArrayList<String> texts = new ArrayList<>();
             int vehicleType = -1;
-            for (Component comp : panel.getComponents()) {
-                if(comp instanceof JPanel) {
+            Component comps[] = panel.getComponents();
+            for (Component comp : comps) {
+                if((vehicleType == -1) && (comp instanceof javax.swing.JPanel)) {
                     String type = getSelection(((JPanel) comp));
                     vehicleType = getType(type);
-                    break;
                 }
-                if (comp instanceof JTextField)
+                if (comp instanceof javax.swing.JTextField)
                     texts.add(((JTextField) comp).getText());
             }
 
@@ -416,7 +443,7 @@ public class GUI extends JFrame implements ItemListener {
             ArrayList<String[]> data = database.searchVehicle(((JTextField)comps[1]).getText());
 
             if(data.size() > 0){
-                String dataValues[][]={};
+                String dataValues[][]= new String[data.size()][];
 
                 for(int i = 0; i < data.size(); i++){
                    dataValues[i] = data.get(i);
@@ -493,7 +520,7 @@ public class GUI extends JFrame implements ItemListener {
             ArrayList<String[]> data = database.showVehiclesByPrice(((JTextField)comps[1]).getText(), ((JTextField)comps[3]).getText(), vehicleType);
 
             if(data.size() > 0){
-                String dataValues[][]={};
+                String dataValues[][]= new String[data.size()][];
                 
                 for(int i = 0; i < data.size(); i++){
                    dataValues[i] = data.get(i);
@@ -527,7 +554,7 @@ public class GUI extends JFrame implements ItemListener {
         // Create some data
         ArrayList<String[]> data = database.showAllUsers();
 
-        String dataValues[][]={};
+        String dataValues[][]= new String[data.size()][];
         for(int i = 0; i < data.size(); i++){
             dataValues[i] = data.get(i);
         }
@@ -669,7 +696,7 @@ public class GUI extends JFrame implements ItemListener {
 
         ArrayList<String[]> data = database.showAllSales();
 
-        String dataValues[][]={};
+        String dataValues[][]= new String[data.size()][];
         for(int i = 0; i < data.size(); i++){
             dataValues[i] = data.get(i);
         }
