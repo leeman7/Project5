@@ -21,7 +21,7 @@ public class Dealership {
      * this method should be invoked from the
      * event dispatch thread.
      */
-    private static void createAndShowGUI() throws IOException {
+    private static void createAndShowGUI(){
         /* Use an appropriate Look and Feel */
         try {
             //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
