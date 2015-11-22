@@ -53,10 +53,15 @@ public class GUI extends JFrame implements ItemListener {
     private JButton manageTrans;
     
 
-    public GUI() throws HeadlessException, IOException {
+    public GUI() throws HeadlessException{
         super("Dealership");
         database = new Database();
-        log = initializeLogger();
+        try{
+            log = initializeLogger();
+        }catch(IOException e){
+            JOPtionPane.showMessageDialog(null, "Internal System Error.");
+            System.exit(ERROR);
+        }
         initializeGui();
         initializeEvents();
     }
@@ -101,6 +106,11 @@ public class GUI extends JFrame implements ItemListener {
         Container pane = this.getContentPane();
         //pane.setLayout(new GridBagLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addWindowsListener(new windowsAdapter(){
+            public void windowClosing(){
+                handle.close();
+            }
+        });
         
         //Create the panel that contains the "cards".
         cards = new JPanel(new CardLayout());
@@ -206,7 +216,7 @@ public class GUI extends JFrame implements ItemListener {
                     addNewVehicle();
                     log.info("Employee added vehicle:\n   -> " + database.getLastVehicle());
                 } catch (BadInputException ex) {
-                    log.warning(ex.getMessage().toUpperCase() + "\n" + convertExceptionToString(ex));
+                    log.warning("Invalid information entered for function addNewVehicle");
                 }
             }
             else if (deleteVehicleRadioButton.isSelected()) {
@@ -214,7 +224,7 @@ public class GUI extends JFrame implements ItemListener {
                     deleteVehicle();
                     log.info("Employee removed vehicle from System");
                 } catch (BadInputException ex) {
-                    log.warning(ex.getMessage().toUpperCase() + "\n" + convertExceptionToString(ex));
+                    log.warning("Invalid VIN entered for function deleteVehicle");
                 }
             }
             else if (searchByVinRadioButton.isSelected()) {
@@ -222,7 +232,7 @@ public class GUI extends JFrame implements ItemListener {
                     searchVehicleByVin();
                     log.info("User searched for vehicle by VIN");
                 } catch (BadInputException ex) {
-                    log.warning(ex.getMessage().toUpperCase() + "\n" + convertExceptionToString(ex));
+                    log.warning("Invalid VIN entered for function searchVehicleByVin");
                 }
             }
             else if (searchByPriceRadioButton.isSelected()) {
@@ -230,7 +240,7 @@ public class GUI extends JFrame implements ItemListener {
                     searchVehicleByPrice();
                     log.info("User searched for vehicles by price range\n");
                 } catch (BadInputException ex) {
-                    log.warning(ex.getMessage().toUpperCase() + "\n" + convertExceptionToString(ex));
+                    log.warning("Invalid information entered for function searchVehicleByPrice");
                 }
             }
         });
@@ -244,7 +254,7 @@ public class GUI extends JFrame implements ItemListener {
                     addNewUser();
                     log.info("Employee added new User to the system.");
                 } catch (BadInputException ex) {
-                    log.warning(ex.getMessage().toUpperCase() + "\n" + convertExceptionToString(ex));
+                    log.warning("Invalid information entered for function addUser");
                 }
             }
             /*else if (deleteUserRadioButton.isSelected()) {
@@ -259,7 +269,7 @@ public class GUI extends JFrame implements ItemListener {
                     updateUsers();
                     log.info("Employee updated another User's information");
                 } catch (BadInputException ex) {
-                    log.warning(ex.getMessage().toUpperCase() + "\n" + convertExceptionToString(ex));
+                    log.warning("Invalid information entered for function updateUser");
                 }
             }
         });
@@ -272,7 +282,7 @@ public class GUI extends JFrame implements ItemListener {
                     addTrans();
                     log.info("Employee Sold Vehicle:");
                 } catch (BadInputException ex) {
-                    log.warning(ex.getMessage().toUpperCase() + "\n" + convertExceptionToString(ex));
+                    log.warning("Invalid information entered for function addTrans");
                 }
             }
         });
