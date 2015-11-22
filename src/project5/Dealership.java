@@ -12,7 +12,7 @@ import java.io.IOException;
 
 /**
  *
- * @author vangelis
+ * @author Clayton Billups and Lee Nardo
  */
 public class Dealership {
 
@@ -54,11 +54,7 @@ public class Dealership {
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                try {
-                    createAndShowGUI();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                createAndShowGUI();
             }
         });
     }

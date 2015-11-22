@@ -68,7 +68,7 @@ public class GUI extends JFrame implements ItemListener {
         try{
             log = initializeLogger();
         }catch(IOException e){
-            JOPtionPane.showMessageDialog(null, "Internal System Error.");
+            JOptionPane.showMessageDialog(null, "Internal System Error.");
             System.exit(ERROR);
         }
         initializeGui();
@@ -89,7 +89,7 @@ public class GUI extends JFrame implements ItemListener {
         writer = new PrintWriter("logs.txt");
         writer.close();
 
-        //intialize fileHandler
+        //initialize fileHandler
         handle= new FileHandler("logs.txt");
         log.addHandler(handle);
         SimpleFormatter format = new SimpleFormatter();
@@ -127,7 +127,7 @@ public class GUI extends JFrame implements ItemListener {
         Container pane = this.getContentPane();
         //pane.setLayout(new GridBagLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        addWindowsListener(new windowsAdapter() {
+        addWindowListener(new WindowAdapter() {
             public void windowClosing() {
                 handle.close();
             }
