@@ -265,32 +265,30 @@ public class Database {
     /**
      * This method allows a new user to be added to the database.
      * @param userType
-     * @param id
      * @param fname
      * @param lname
-     * @param ph
-     * @param ex3
-     * @param ex4
+     * @param extraInfo1
+     * @param extraInfo2
      * @throws Database BadInputException
      */
-    public void addNewUser(int userType, String id, String fname, String lname, String ph, String dl, String ex3, String ex4) throws BadInputException {
+    public void addNewUser(int userType, String fname, String lname, String extraInfo1, String extraInfo2) throws BadInputException {
 
         if (userType < 1 || userType > 3)
             throw new BadInputException("Legal user type values: 1-2.");
 
         if (userType == 1) {
-            String phoneNumber = ph;
-            int dlnumber = Integer.parseInt(dl);
+            String phoneNumber = extraInfo1;
+            int dlnumber = Integer.parseInt(extraInfo2);
             if (dlnumber < 0)
                 throw new BadInputException("Driver license number cannot be negative.");
 
             users.add(new Customer(userIdCounter++, fname, lname,
                     phoneNumber, dlnumber));
         } else if (userType == 2) {
-            float monthlySalary = Float.parseFloat(ex3);
+            float monthlySalary = Float.parseFloat(extraInfo1);
             if (monthlySalary < 0.0f)
                 throw new BadInputException("Monthly salary cannot be negative.");
-            int bankAccNumber = Integer.parseInt(ex4);
+            int bankAccNumber = Integer.parseInt(extraInfo2);
             if (bankAccNumber < 0)
                 throw new BadInputException("Driver license number cannot be negative.");
 

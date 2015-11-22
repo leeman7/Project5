@@ -445,24 +445,24 @@ public class GUI extends JFrame implements ItemListener {
         panel.add(new JLabel("Price"));
         panel.add(new JTextField(6));
         
-        JLabel ex1 = new JLabel("BodyStyle");
-        panel.add(ex1);
+        JLabel extraInfo1 = new JLabel("BodyStyle");
+        panel.add(extraInfo1);
         panel.add(new JTextField(20));
-        JLabel ex2 = new JLabel("N/A");
-        panel.add(ex2);
+        JLabel extraInfo2 = new JLabel("N/A");
+        panel.add(extraInfo2);
         panel.add(new JTextField(20));
 
         car.addActionListener(e -> {
-            ex1.setText("BodyStyle");
-            ex2.setText("N/A");
+            extraInfo1.setText("BodyStyle");
+            extraInfo2.setText("N/A");
         });
         motorcycle.addActionListener(e -> {
-            ex1.setText("Type");
-            ex2.setText("Eng. Disp.");
+            extraInfo1.setText("Type");
+            extraInfo2.setText("Eng. Disp.");
         });
         truck.addActionListener(e -> {
-            ex1.setText("Max Load");
-            ex2.setText("Length");
+            extraInfo1.setText("Max Load");
+            extraInfo2.setText("Length");
         });
         
         String options[]={"Add Vehicle", "Cancel"};
@@ -727,27 +727,24 @@ public class GUI extends JFrame implements ItemListener {
         panel.add(radiosPanel);
 
         // Add User Text Fields
-        panel.add(new JLabel("ID"));
-        panel.add(new JTextField(6));
         panel.add(new JLabel("First Name"));
         panel.add(new JTextField(20));
         panel.add(new JLabel("Last Name"));
         panel.add(new JTextField(20));
-
-        JLabel ex3 = new JLabel("Phone");
-        panel.add(ex3);
+        JLabel extraInfo1 = new JLabel("Phone");
+        panel.add(extraInfo1);
         panel.add(new JTextField(20));
-        JLabel ex4 = new JLabel("Drivers License");
-        panel.add(ex4);
+        JLabel extraInfo2 = new JLabel("Drivers License");
+        panel.add(extraInfo2);
         panel.add(new JTextField(20));
 
         customer.addActionListener(e -> {
-            ex3.setText("Phone");
-            ex4.setText("Drivers License");
+            extraInfo1.setText("Phone");
+            extraInfo2.setText("Drivers License");
         });
         employee.addActionListener(e -> {
-            ex3.setText("Monthly Salary");
-            ex4.setText("Bank Account");
+            extraInfo1.setText("Monthly Salary");
+            extraInfo2.setText("Bank Account");
         });
 
         // Print Options
@@ -755,19 +752,21 @@ public class GUI extends JFrame implements ItemListener {
         int opt = JOptionPane.showOptionDialog(this, panel, "Add new vehicle", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
 
         if (opt == 0) {
-            ArrayList<String> text = new ArrayList<>();
+            //get all necessary components
+            ArrayList<String> texts = new ArrayList<>();
             int userType = -1;
             Component comps[] = panel.getComponents();
             for (Component comp : comps) {
-                if ((userType == -1) && (comp instanceof javax.swing.JPanel)) {
+                if((userType == -1) && (comp instanceof javax.swing.JPanel)) {
                     String type = getSelection(((JPanel) comp));
                     userType = getType(type);
                 }
                 if (comp instanceof javax.swing.JTextField)
-                    text.add(((JTextField) comp).getText());
+                    texts.add(((JTextField) comp).getText());
             }
-            database.addNewUser(userType, text.get(0), text.get(1), text.get(2), text.get(3), text.get(4), text.get(5), text.get(6));
-            JOptionPane.showMessageDialog(this, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
+
+            database.addNewUser(userType, texts.get(0), texts.get(1), texts.get(2), texts.get(3));
+            JOptionPane.showMessageDialog(this, "User Successfully Added");
         }
     }
 
