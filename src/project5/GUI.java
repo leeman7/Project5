@@ -83,7 +83,7 @@ public class GUI extends JFrame implements ItemListener {
      */
     private Logger initializeLogger() throws IOException{
         //initialize logger
-        //Logger log = Logger.getAnonymousLogger("myGUILog");
+        Logger log = Logger.getAnonymousLogger();
 
         //create logs.txt file
         writer = new PrintWriter("logs.txt");
@@ -102,17 +102,17 @@ public class GUI extends JFrame implements ItemListener {
         return log;
     }
 
-    /**
+    /*
      * Handler function for toString BadInputException
      * returns a stacktrace error if the string was not able to be
      * converted from the user input.
      * @param ex
      * @return error.toString()
-     */
+     *
     private String convertExceptionToString(BadInputException ex){
         ex.printStackTrace(new PrintWriter(error));
         return error.toString();
-    }
+    }*/
 
     /**
      * Initialize GUI starts our GUI interface for users to use and interact
@@ -128,7 +128,8 @@ public class GUI extends JFrame implements ItemListener {
         //pane.setLayout(new GridBagLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
-            public void windowClosing() {
+            @Override
+            public void windowClosing(WindowEvent e) {
                 handle.close();
             }
         });
