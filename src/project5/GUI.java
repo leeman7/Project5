@@ -127,8 +127,8 @@ public class GUI extends JFrame implements ItemListener {
         Container pane = this.getContentPane();
         //pane.setLayout(new GridBagLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        addWindowsListener(new windowsAdapter(){
-            public void windowClosing(){
+        addWindowsListener(new windowsAdapter() {
+            public void windowClosing() {
                 handle.close();
             }
         });
@@ -821,14 +821,23 @@ public class GUI extends JFrame implements ItemListener {
         panel.add(ex4);
         panel.add(new JTextField(20));
 
-        /*customer.addActionListener(e -> {
+        // Add Customer/Employee button selection
+        panel.add(new JLabel("User type:"));
+        JRadioButton customer = new JRadioButton("Customer");
+        customer.setSelected(true);
+        JRadioButton employee = new JRadioButton("Employee");
+        ButtonGroup group = new ButtonGroup();
+        group.add(customer);
+        group.add(employee);
+
+        customer.addActionListener(e -> {
             ex3.setText("Phone");
             ex4.setText("Drivers License");
         });
         employee.addActionListener(e -> {
             ex3.setText("Monthly Salary");
             ex4.setText("Bank Account");
-        });*/
+        });
 
         // Print Options
         String Options[] = {"Update User", "Cancel"};
@@ -836,22 +845,22 @@ public class GUI extends JFrame implements ItemListener {
 
         if (opt == 1) {
             ArrayList<String> text = new ArrayList<>();
-            int userID = -1;
-            for (Component comp : panel.getComponents()) {
-                if (comp instanceof JRadioButton) {
+            int userType = -1;
+            Component comps[] = panel.getComponents();
+            for (Component comp : comps) {
+                if ((userType == -1) && (comp instanceof javax.swing.JPanel)) {
                     if (((JRadioButton) comp).isSelected()) {
-                        try {
-                            userID = Integer.parseInt(((JRadioButton) comp).getText());
-                        } catch (Exception e) {
-                            throw new BadInputException("Unable to determine User Type");
-                        }
+                        String type = getSelection(((JPanel) comp));
+                        userType = getType(type);
                     }
+                    if (comp instanceof javax.swing.JTextField)
+                        text.add(((JTextField) comp).getText());
                 }
 
                 if (comp instanceof JTextArea)
                     text.add(((JTextField) comp).getText());
             }
-            database.updateUsers(userID, text.get(0), text.get(1), text.get(2), text.get(3), text.get(4), text.get(5));
+            database.updateUsers(userType, text.get(0), text.get(1), text.get(2), text.get(3), text.get(4), text.get(5));
             JOptionPane.showMessageDialog(null, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
         }
     }
