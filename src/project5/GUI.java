@@ -68,7 +68,7 @@ public class GUI extends JFrame implements ItemListener {
         try{
             log = initializeLogger();
         }catch(IOException e){
-            JOptionPane.showMessageDialog(null, "Internal System Error.");
+            JOptionPane.showMessageDialog(this, "Internal System Error.");
             System.exit(ERROR);
         }
         initializeGui();
@@ -83,7 +83,7 @@ public class GUI extends JFrame implements ItemListener {
      */
     private Logger initializeLogger() throws IOException{
         //initialize logger
-        Logger log = Logger.getAnonymousLogger("myGUILog");
+        //Logger log = Logger.getAnonymousLogger("myGUILog");
 
         //create logs.txt file
         writer = new PrintWriter("logs.txt");
@@ -766,7 +766,7 @@ public class GUI extends JFrame implements ItemListener {
                     text.add(((JTextField) comp).getText());
             }
             database.addNewUser(userType, text.get(0), text.get(1), text.get(2), text.get(3), text.get(4), text.get(5), text.get(6));
-            JOptionPane.showMessageDialog(null, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
         }
     }
 
@@ -925,16 +925,15 @@ public class GUI extends JFrame implements ItemListener {
         String Options[] = {"Add Transaction", "Cancel"};
         int opt = JOptionPane.showOptionDialog(this, panel, "Add new transaction", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
 
-        ArrayList<String> text = null;
         if (opt == 0) {
-            text = new ArrayList<>();
+            ArrayList<String> text = new ArrayList<>();
             Component comps[] = panel.getComponents();
             for (Component comp : comps) {
                 if (comp instanceof JTextField)
                     text.add(((JTextField) comp).getText());
             }
+            database.sellVehicle(text.get(0), text.get(1), text.get(2), text.get(3));
+            JOptionPane.showMessageDialog(null, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
         }
-        database.sellVehicle(text.get(0), text.get(1), text.get(2), text.get(3));
-        JOptionPane.showMessageDialog(null, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
     }
 }
