@@ -20,6 +20,10 @@ import java.util.ArrayList;
 import java.util.logging.SimpleFormatter;
 import javax.swing.*;
 
+/**
+ * GUI sets all the elements necessary for our GUI interface setup
+ * and all the necessary panels used in generating the GUI.
+ */
 public class GUI extends JFrame implements ItemListener {
     private JPanel cards; //a panel that uses CardLayout
     private Database database;
@@ -51,8 +55,13 @@ public class GUI extends JFrame implements ItemListener {
     private JRadioButton showTransRadioButton;
     private JRadioButton addTransRadioButton;
     private JButton manageTrans;
-    
 
+    /**
+     * Handler Exception for if GUI fails to be initialized properly
+     * upon startup.
+     * @throws HeadlessException
+     * @throws IOException
+     */
     public GUI() throws HeadlessException, IOException {
         super("Dealership");
         database = new Database();
@@ -88,11 +97,23 @@ public class GUI extends JFrame implements ItemListener {
         return log;
     }
 
+    /**
+     * Handler function for toString BadInputException
+     * returns a stacktrace error if the string was not able to be
+     * converted from the user input.
+     * @param ex
+     * @return error.toString()
+     */
     private String convertExceptionToString(BadInputException ex){
         ex.printStackTrace(new PrintWriter(error));
         return error.toString();
     }
-    
+
+    /**
+     * Initialize GUI starts our GUI interface for users to use and interact
+     * with. The following function sets the default settings for
+     * our GUI interface and how it will appear to our user.
+     */
     private void initializeGui() {
         this.setSize(500, 400);
         Dimension windowSize = this.getSize();
@@ -193,7 +214,12 @@ public class GUI extends JFrame implements ItemListener {
     }
 
     /**
-     *
+     * Initialize Events initializes our three panels used for
+     * -Vehicles
+     * -Users
+     * -Transactions
+     * The events are handled for each sub panel and what all state changes
+     * occurs for each of those events.
      */
     private void initializeEvents(){
         manageVehicles.addActionListener(e->{
@@ -285,9 +311,17 @@ public class GUI extends JFrame implements ItemListener {
      */
     public void itemStateChanged(ItemEvent evt) {
         CardLayout cl = (CardLayout)(cards.getLayout());
-        cl.show(cards, (String)evt.getItem());
+        cl.show(cards, (String) evt.getItem());
     }
-    
+
+    /**
+     * Helper function used handled the selections made by the user through
+     * our GUI. This mostly is for the Radiobuttons when they are specifically
+     * selected for either: VehicleType or UserType.
+     * @param panel
+     * @return
+     * @throws BadInputException
+     */
     private String getSelection(JPanel panel) throws BadInputException{
         for (Component comp : panel.getComponents()){
             if(comp instanceof JRadioButton){
@@ -303,6 +337,13 @@ public class GUI extends JFrame implements ItemListener {
         return "Invalid Type.";
     }
 
+    /**
+     * Helper function that we created to help handle different types of
+     * vehicles and users. Theses a mostly used to verify that proper input
+     * was used for the different types of each class.
+     * @param type
+     * @return
+     */
     private int getType(String type){
         if(type.equals("Passenger Car"))
             return 1;
@@ -318,6 +359,10 @@ public class GUI extends JFrame implements ItemListener {
             return -1;
     }
 
+    /**
+     * The Show vehicles function displays all the vehicles in the current
+     * database at the time.
+     */
     private void showAllVehicles() {
         JPanel topPanel = new JPanel();
         topPanel.setSize(400, 300);
@@ -347,6 +392,11 @@ public class GUI extends JFrame implements ItemListener {
         JOptionPane.showMessageDialog(this, topPanel, "Search results", JOptionPane.PLAIN_MESSAGE);
     }
 
+    /**
+     * The Add Vehicle function adds a new vehicle entry to our Database
+     * if the user submits wrong output the user should get an error.
+     * @throws BadInputException
+     */
     private void addNewVehicle() throws BadInputException {
         JPanel panel = new JPanel();
         panel.setSize(500, 400);
@@ -427,6 +477,12 @@ public class GUI extends JFrame implements ItemListener {
         }
     }
 
+    /**
+     * The Delete vehicle function prompts the user for a VIN of a vehicle
+     * to delete from the database. If the VIN is found the vehicle is then
+     * removed from the database using the GUI.
+     * @throws BadInputException
+     */
     private void deleteVehicle() throws BadInputException {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
@@ -449,7 +505,12 @@ public class GUI extends JFrame implements ItemListener {
         }
     }
 
-    
+    /**
+     * The Following function searches for a vehicle in our Database based on
+     * the VIN provided by the user. If the vehicle VIN exists it will be displayed
+     * via the GUI to the user.
+     * @throws BadInputException
+     */
     private void searchVehicleByVin() throws BadInputException {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
@@ -476,7 +537,7 @@ public class GUI extends JFrame implements ItemListener {
             // Create columns names
             String columnNames[] = {"VIN", "MAKE", "MODEL", "YEAR", "MILEAGE", "PRICE"};
 
-            ArrayList<String[]> data = database.searchVehicle(((JTextField)comps[1]).getText());
+            ArrayList<String[]> data = database.searchVehicle(((JTextField) comps[1]).getText());
 
             if(data.size() > 0){
                 String dataValues[][]= new String[data.size()][];
@@ -497,7 +558,13 @@ public class GUI extends JFrame implements ItemListener {
             JOptionPane.showMessageDialog(this, results, "Search results", JOptionPane.PLAIN_MESSAGE);
         }
     }
-    
+
+    /**
+     * The Following Functions searches for a Vehicle in the Database by a specific
+     * price range. If a vehicle exists with a price in that range it will be displayed
+     * through the GUI.
+     * @throws BadInputException
+     */
     private void searchVehicleByPrice() throws BadInputException {
         JPanel panel = new JPanel();
         panel.setSize(400, 300);
@@ -576,7 +643,8 @@ public class GUI extends JFrame implements ItemListener {
 
     
     /**
-     *
+     * The following function displays all users in the Database via the GUI
+     * interface.
      */
     private void showAllUsers() {
         JPanel topPanel = new JPanel();
@@ -623,7 +691,8 @@ public class GUI extends JFrame implements ItemListener {
     }
 
     /**
-     * This function
+     * This function adds a new user using the GUI interface to the database.
+     * @throws BadInputException
      */
     private void addNewUser() throws BadInputException {
         JPanel panel = new JPanel();
