@@ -707,7 +707,7 @@ public class GUI extends JFrame implements ItemListener {
      */
     private void addNewUser() throws BadInputException {
         JPanel panel = new JPanel();
-        panel.setSize(400, 300);
+        panel.setSize(500, 400);
         getContentPane().add(panel);
         panel.setLayout(new FormLayout());
 
@@ -716,6 +716,7 @@ public class GUI extends JFrame implements ItemListener {
         JRadioButton customer = new JRadioButton("Customer");
         customer.setSelected(true);
         JRadioButton employee = new JRadioButton("Employee");
+
         ButtonGroup group = new ButtonGroup();
         group.add(customer);
         group.add(employee);
@@ -724,6 +725,7 @@ public class GUI extends JFrame implements ItemListener {
         JPanel radiosPanel = new JPanel(new FlowLayout());
         radiosPanel.add(customer);
         radiosPanel.add(employee);
+
         panel.add(radiosPanel);
 
         // Add User Text Fields

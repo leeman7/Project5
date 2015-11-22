@@ -278,24 +278,35 @@ public class Database {
         if (userType < 1 || userType > 3)
             throw new BadInputException("Legal user type values: 1-2.");
 
-        if (userType == 1) {
-            String phoneNumber = ph;
-            int dlnumber = Integer.parseInt(dl);
-            if (dlnumber < 0)
-                throw new BadInputException("Driver license number cannot be negative.");
+        if (id.length() > 6)
+            throw new BadInputException("Invalid Length ID");
+        else {
+            int ID = Integer.parseInt(id);
+            if (userType == 1) {
+                int dlnumber = Integer.parseInt(dl);
+                Customer cus = new Customer(ID, fname, lname, ph, dlnumber);
 
-            users.add(new Customer(userIdCounter++, fname, lname,
-                    phoneNumber, dlnumber));
-        } else if (userType == 2) {
-            float monthlySalary = Float.parseFloat(ex3);
-            if (monthlySalary < 0.0f)
-                throw new BadInputException("Monthly salary cannot be negative.");
-            int bankAccNumber = Integer.parseInt(ex4);
-            if (bankAccNumber < 0)
-                throw new BadInputException("Driver license number cannot be negative.");
+                if (dlnumber < 0)
+                    throw new BadInputException("Driver license number cannot be negative.");
 
-            users.add(new Employee(userIdCounter++, fname, lname,
-                    monthlySalary, bankAccNumber));
+                users.add(cus);
+
+            } else if (userType == 2) {
+                float monthlySalary = Float.parseFloat(ex3);
+                int bankAccNumber = Integer.parseInt(ex4);
+                Employee emp = new Employee(ID, fname, lname, monthlySalary, bankAccNumber);
+
+                if (monthlySalary < 0.0f)
+                    throw new BadInputException("Monthly salary cannot be negative.");
+
+                if (bankAccNumber < 0)
+                    throw new BadInputException("Driver license number cannot be negative.");
+
+                users.add(emp);
+
+            } else {
+                throw new BadInputException("Invalid User Type");
+            }
         }
     }
 
