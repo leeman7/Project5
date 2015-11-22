@@ -191,7 +191,10 @@ public class GUI extends JFrame implements ItemListener {
         this.add(comboBoxPane, BorderLayout.PAGE_START);
         this.add(cards, BorderLayout.CENTER);
     }
-    
+
+    /**
+     *
+     */
     private void initializeEvents(){
         manageVehicles.addActionListener(e->{
             if (showVehiclesRadioButton.isSelected()){
@@ -274,7 +277,12 @@ public class GUI extends JFrame implements ItemListener {
             }
         });
     }
-    
+
+    /**
+     * This functions lists the state changes for our GUI and then processes the event
+     * based on the actions performed by the user within the GUI.
+     * @param evt
+     */
     public void itemStateChanged(ItemEvent evt) {
         CardLayout cl = (CardLayout)(cards.getLayout());
         cl.show(cards, (String)evt.getItem());
@@ -595,6 +603,21 @@ public class GUI extends JFrame implements ItemListener {
         JScrollPane scrollPane = new JScrollPane(table);
         topPanel.add(scrollPane, BorderLayout.CENTER);
 
+        ArrayList<String[]> users = database.showAllUsers();
+
+        if (users.size() > 0) {
+            String Values[][] = new String[users.size()][];
+            for (int i = 0; i < users.size(); i++){
+                Values[i] = users.get(i);
+            }
+            // Create a new table instance
+            JTable tables = new JTable(Values, columnNames);
+            tables.setFillsViewportHeight(true);
+
+            // Add the able to a scrolling pane
+            JScrollPane scrollPanes = new JScrollPane(tables);
+            topPanel.add(scrollPanes, BorderLayout.CENTER);
+        }
         // Print Results
         JOptionPane.showMessageDialog(this, topPanel, "Search results", JOptionPane.PLAIN_MESSAGE);
     }
@@ -654,18 +677,13 @@ public class GUI extends JFrame implements ItemListener {
         if (opt == 0) {
             ArrayList<String> text = new ArrayList<>();
             int userType = -1;
-            for (Component comp : panel.getComponents()) {
-                if (comp instanceof JRadioButton) {
-                    if (((JRadioButton) comp).isSelected()) {
-                        try {
-                            userType = Integer.parseInt(((JRadioButton) comp).getText());
-                        } catch (Exception e) {
-                            throw new BadInputException("Unable to determine User Type");
-                        }
-                    }
+            Component comps[] = panel.getComponents();
+            for (Component comp : comps) {
+                if ((userType == -1) && (comp instanceof javax.swing.JPanel)) {
+                    String type = getSelection(((JPanel) comp));
+                    userType = getType(type);
                 }
-
-                if (comp instanceof JTextArea)
+                if (comp instanceof javax.swing.JTextField)
                     text.add(((JTextField) comp).getText());
             }
             database.addNewUser(userType, text.get(0), text.get(1), text.get(2), text.get(3), text.get(4), text.get(5), text.get(6));
@@ -774,19 +792,20 @@ public class GUI extends JFrame implements ItemListener {
 
         ArrayList<String[]> data = database.showAllSales();
 
-        String dataValues[][]= new String[data.size()][];
-        for(int i = 0; i < data.size(); i++){
-            dataValues[i] = data.get(i);
+        if (data.size() > 0) {
+            String dataValues[][]= new String[data.size()][];
+
+            for(int i = 0; i < data.size(); i++){
+                dataValues[i] = data.get(i);
+            }
+            // Create a new table instance
+            JTable table = new JTable(dataValues, columnNames);
+            table.setFillsViewportHeight(true);
+
+            // Add the table to a scrolling pane
+            JScrollPane scrollPane = new JScrollPane(table);
+            topPanel.add(scrollPane, BorderLayout.CENTER);
         }
-
-        // Create a new table instance
-        JTable table = new JTable(dataValues, columnNames);
-        table.setFillsViewportHeight(true);
-
-        // Add the table to a scrolling pane
-        JScrollPane scrollPane = new JScrollPane(table);
-        topPanel.add(scrollPane, BorderLayout.CENTER);
-
         // Print Options
         String Options[] = {"Show Transactions", "Cancel"};
         JOptionPane.showOptionDialog(this, topPanel, "Search results", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
@@ -818,24 +837,16 @@ public class GUI extends JFrame implements ItemListener {
         String Options[] = {"Add Transaction", "Cancel"};
         int opt = JOptionPane.showOptionDialog(this, panel, "Add new transaction", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
 
+        ArrayList<String> text = null;
         if (opt == 0) {
-            ArrayList<String> text = new ArrayList<>();
-            for (Component comp : panel.getComponents()) {
-                if (comp instanceof JRadioButton) {
-                    if (((JRadioButton) comp).isSelected()) {
-                        try {
-                            //userType = Integer.parseInt(((JRadioButton) comp).getText());
-                        } catch (Exception e) {
-                            throw new BadInputException("Unable to determine Sale transaction");
-                        }
-                    }
-                }
-
-                if (comp instanceof JTextArea)
+            text = new ArrayList<>();
+            Component comps[] = panel.getComponents();
+            for (Component comp : comps) {
+                if (comp instanceof JTextField)
                     text.add(((JTextField) comp).getText());
             }
-            database.sellVehicle(text.get(0), text.get(1), text.get(2), text.get(3));
-            JOptionPane.showMessageDialog(null, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
         }
+        database.sellVehicle(text.get(0), text.get(1), text.get(2), text.get(3));
+        JOptionPane.showMessageDialog(null, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
     }
 }

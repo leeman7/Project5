@@ -8,6 +8,7 @@ package project5;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import java.io.IOException;
 
 /**
  *
@@ -20,7 +21,7 @@ public class Dealership {
      * this method should be invoked from the
      * event dispatch thread.
      */
-    private static void createAndShowGUI() {
+    private static void createAndShowGUI() throws IOException {
         /* Use an appropriate Look and Feel */
         try {
             //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -53,7 +54,11 @@ public class Dealership {
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                createAndShowGUI();
+                try {
+                    createAndShowGUI();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
