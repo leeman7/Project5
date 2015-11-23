@@ -279,21 +279,25 @@ public class Database {
         if (userType == 1) {
             String phoneNumber = extraInfo1;
             int dlnumber = Integer.parseInt(extraInfo2);
+            int id = userIdCounter++;
+
             if (dlnumber < 0)
                 throw new BadInputException("Driver license number cannot be negative.");
 
-            users.add(new Customer(userIdCounter++, fname, lname,
-                    phoneNumber, dlnumber));
+            users.add(new Customer(id, fname, lname, phoneNumber, dlnumber));
+
         } else if (userType == 2) {
             float monthlySalary = Float.parseFloat(extraInfo1);
+            int bankAccNumber = Integer.parseInt(extraInfo2);
+
             if (monthlySalary < 0.0f)
                 throw new BadInputException("Monthly salary cannot be negative.");
-            int bankAccNumber = Integer.parseInt(extraInfo2);
+
             if (bankAccNumber < 0)
                 throw new BadInputException("Driver license number cannot be negative.");
 
-            users.add(new Employee(userIdCounter++, fname, lname,
-                    monthlySalary, bankAccNumber));
+            int id = userIdCounter++;
+            users.add(new Employee(id, fname, lname, monthlySalary, bankAccNumber));
         }
     }
 
@@ -302,20 +306,18 @@ public class Database {
      * @param id
      * @param fname
      * @param lname
-     * @param ph
-     * @param dl
-     * @param ex3
-     * @param ex4
+     * @param extraInfo1
+     * @param extraInfo2
      * @throws Database BadInputException
      */
-    public void updateUsers(int id, String fname, String lname, String ph, String dl, String ex3, String ex4) throws BadInputException {
-        int userID=-1, dlNumber=-1, bankAccNumber=-1;
+    public void updateUsers(int id, String fname, String lname, String extraInfo1, String extraInfo2) throws BadInputException {
+        int userID = -1, dlNumber = -1, bankAccNumber = -1;
         float monthlySalary;
 
         try {
-        userID = id;
-            dlNumber = Integer.parseInt(dl);
-            bankAccNumber = Integer.parseInt(ex4);
+            userID = id;
+            dlNumber = Integer.parseInt(extraInfo2);
+            bankAccNumber = Integer.parseInt(extraInfo2);
         }catch(Exception e){
             throw new BadInputException("Invalid userID, Driver's License, or Bank Account Number.");
         }
@@ -332,14 +334,15 @@ public class Database {
         }
         
         if (user == null) {
-            throw new BadInputException("NO User Found.");
+            throw new BadInputException("No User Found.");
         }
 
         String firstName = fname;
         String lastName = lname;
         
         if (user instanceof Customer) {
-            String phoneNumber = ph;
+            String phoneNumber = extraInfo1;
+            dlNumber = Integer.parseInt(extraInfo2);
 
             user.setFirstName(firstName);
             user.setLastName(lastName);
@@ -348,7 +351,7 @@ public class Database {
             
         } else { //User is an employee
             try{
-                monthlySalary = Float.parseFloat(ex3);
+                monthlySalary = Float.parseFloat(extraInfo1);
             }catch (Exception e){
                 throw new BadInputException("Invalid Monthly Salary");
             }

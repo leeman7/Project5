@@ -803,42 +803,46 @@ public class GUI extends JFrame implements ItemListener {
      */
     private void updateUsers() throws BadInputException {
         JPanel panel = new JPanel();
-        panel.setSize(400, 300);
+        panel.setSize(500, 400);
         getContentPane().add(panel);
         panel.setLayout(new FormLayout());
-
-        // Add User Text fields
-        panel.add(new JLabel("Enter ID"));
-        panel.add(new JTextField(5));
-
-        panel.add(new JLabel("First Name"));
-        panel.add(new JTextField(20));
-        panel.add(new JLabel("Last Name"));
-        panel.add(new JTextField(20));
-
-        JLabel ex3 = new JLabel("Phone");
-        panel.add(ex3);
-        panel.add(new JTextField(20));
-        JLabel ex4 = new JLabel("Drivers License");
-        panel.add(ex4);
-        panel.add(new JTextField(20));
 
         // Add Customer/Employee button selection
         panel.add(new JLabel("User type:"));
         JRadioButton customer = new JRadioButton("Customer");
         customer.setSelected(true);
         JRadioButton employee = new JRadioButton("Employee");
+
         ButtonGroup group = new ButtonGroup();
         group.add(customer);
         group.add(employee);
 
+        // Add organized button panel
+        JPanel radiosPanel = new JPanel(new FlowLayout());
+        radiosPanel.add(customer);
+        radiosPanel.add(employee);
+
+        panel.add(radiosPanel);
+
+        // Add User Text Fields
+        panel.add(new JLabel("First Name"));
+        panel.add(new JTextField(20));
+        panel.add(new JLabel("Last Name"));
+        panel.add(new JTextField(20));
+        JLabel extraInfo1 = new JLabel("Phone");
+        panel.add(extraInfo1);
+        panel.add(new JTextField(20));
+        JLabel extraInfo2 = new JLabel("Drivers License");
+        panel.add(extraInfo2);
+        panel.add(new JTextField(20));
+
         customer.addActionListener(e -> {
-            ex3.setText("Phone");
-            ex4.setText("Drivers License");
+            extraInfo1.setText("Phone");
+            extraInfo2.setText("Drivers License");
         });
         employee.addActionListener(e -> {
-            ex3.setText("Monthly Salary");
-            ex4.setText("Bank Account");
+            extraInfo1.setText("Monthly Salary");
+            extraInfo2.setText("Bank Account");
         });
 
         // Print Options
@@ -862,7 +866,7 @@ public class GUI extends JFrame implements ItemListener {
                 if (comp instanceof JTextArea)
                     text.add(((JTextField) comp).getText());
             }
-            database.updateUsers(userType, text.get(0), text.get(1), text.get(2), text.get(3), text.get(4), text.get(5));
+            database.updateUsers(userType, text.get(0), text.get(1), text.get(2), text.get(3));
             JOptionPane.showMessageDialog(null, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
         }
     }
@@ -897,7 +901,7 @@ public class GUI extends JFrame implements ItemListener {
             topPanel.add(scrollPane, BorderLayout.CENTER);
         }
         // Print Options
-        String Options[] = {"Show Transactions", "Cancel"};
+        String Options[] = {"Cancel"};
         JOptionPane.showOptionDialog(this, topPanel, "Search results", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, Options, Options[0]);
     }
 
@@ -935,7 +939,7 @@ public class GUI extends JFrame implements ItemListener {
                     text.add(((JTextField) comp).getText());
             }
             database.sellVehicle(text.get(0), text.get(1), text.get(2), text.get(3));
-            JOptionPane.showMessageDialog(null, "Successfully Added new user!", "Success", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Successfully Added new Transaction!", "Success", JOptionPane.PLAIN_MESSAGE);
         }
     }
 }
