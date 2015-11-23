@@ -283,8 +283,8 @@ public class Database {
 
             if (dlnumber < 0)
                 throw new BadInputException("Driver license number cannot be negative.");
-
-            users.add(new Customer(id, fname, lname, phoneNumber, dlnumber));
+            Customer cust = new Customer(id, fname, lname, phoneNumber, dlnumber)
+            users.add(cust);
 
         } else if (userType == 2) {
             float monthlySalary = Float.parseFloat(extraInfo1);
@@ -297,7 +297,8 @@ public class Database {
                 throw new BadInputException("Driver license number cannot be negative.");
 
             int id = userIdCounter++;
-            users.add(new Employee(id, fname, lname, monthlySalary, bankAccNumber));
+            Employee emp = new Employee(id, fname, lname, monthlySalary, bankAccNumber)
+            users.add(emp);
         }
     }
 
